@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Home</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<br>
+<header>
+  <div class="container">
+    <div class="title-header">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Logo">
+          <img src="images/coffee-cup-icon.png" alt="Logo">
+        </a>
+      </div>
+      <div class="title">ClydeBank Coffee Shop</div>
+    </div>
+  </div>
+</header>
+<nav>
+  <div class="container">
+    <ul>
+      <li class="active"><a href="index.html">Menu</a></li>
+      <li><a href="webSocketChat.html">WebSocketChat</a></li>
+      <li><a href="ai.html">AI Image Processing</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <br></br>
+  <h1>Logs</h1>
+  <input class="draw-border" id="sendMessage" size="47" value="" style="margin-bottom: 5px;">
+  <button class="echo-button" id="connect">Search</button>
+
+  <br></br>
+  <div id="output"></div>
+
+</div>
+<script>
+  var ws = null;
+  function log(msg, color) {
+    var div = document.getElementById("output");
+    div.innerHTML = div.innerHTML + "<pre style='color:" + color + "'>" + msg + "</pre>";
+  }
+
+  connect.onclick = function () {
+    ws = new WebSocket("ws://localhost:5849");
+
+    ws.onopen = function () {
+      ws.send(sendMessage.value);
+      sendMessage.value = "";
+      log("Search results", "green");
+    };
+
+    ws.onmessage = function (evt) {
+      log(evt.data, "green");
+      /*
+      var arr = evt.data.split(",");
+      if (arr.length >= 7) {
+        log(evt.data, "green");
+        //updateTable(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+      }
+      else
+        log("Unknown message received: " + evt.data, "red");
+        */
+    };
+
+    ws.onclose = function () {
+      log("WebSocket closed.", "red");
+    }
+  };
+
+  function updateTable(CreationDate, FileName, Timespamp, Level, Source, TransID, Message) {
+
+    var table = document.getElementById("dataTable");
+
+    if (table.rows.length > 1) {
+      for (r = 1; r < table.rows.length; r++) {
+        if (table.rows[r].cells[0].innerHTML == CreationDate) {
+          table.rows[r].cells[1].innerHTML = FileName;
+          table.rows[r].cells[2].innerHTML = Timespamp;
+          table.rows[r].cells[3].innerHTML = Level;
+          table.rows[r].cells[4].innerHTML = Source;
+          table.rows[r].cells[5].innerHTML = TransID;
+          table.rows[r].cells[6].innerHTML = Message;
+          return;
+        }
+      }
+    }
+
+    var row = table.insertRow(table.rows.length);
+
+    var cell1 = row.insertCell(0);
+    cell1.innerHTML = CreationDate;
+
+    var cell2 = row.insertCell(1);
+    cell2.innerHTML = FileName;
+
+    var cell3 = row.insertCell(2);
+    cell3.innerHTML = Timespamp;
+
+    var cell4 = row.insertCell(3);
+    cell4.innerHTML = Level;
+
+    var cell5 = row.insertCell(4);
+    cell5.innerHTML = Source;
+
+    var cell6 = row.insertCell(5);
+    cell6.innerHTML = TransID;
+
+    var cell7 = row.insertCell(6);
+    cell7.innerHTML = Message;
+  }
+</script>
+</body>
+
+</html>

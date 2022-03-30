@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registration Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/registration.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                    <h4 class="modal-title">Please register by creating a New Account</h4>
+                </div>
+
+                <form action="/" method="post" oninput='passwordr.setCustomValidity(passwordr.value != password.value ? "Passwords do not match." : "")'>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="userEmail">Email Address</label>
+                            <input type="email" class="form-control" required="" name="userEmail" value="">
+                            <span class="help-block">Your email address is also used to log in.</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" required="" name="password" value="">
+                                    <span class="help-block">Choose a password for your new account.</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="passwordr">Repeat Password</label>
+                                    <input type="password" class="form-control" required="" name="passwordr" value="">
+                                    <span class="help-block">Type the password again. Passwords must match.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="input" name="submit" value="newAccount" class="w-100 btn btn-lg btn-primary"><i
+                                class="fa fa-check"></i> Create My Account</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

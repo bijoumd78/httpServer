@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>AI Power Image Processing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="css/ai2.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="javascripts/app.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="title-header">
+        <div class="logo">
+          <a href="index.html">
+            <img src="images/logo.png" alt="Logo">
+            <img src="images/coffee-cup-icon.png" alt="Logo">
+          </a>
+        </div>
+        <div class="title">ClydeBank Coffee Shop</div>
+      </div>
+    </div>
+  </header>
+  <nav>
+    <div class="container">
+      <ul>
+        <li class="active"><a href="index.html">Menu</a></li>
+        <li><a href="webSocketChat.html">WebSocketChat</a></li>
+        <li><a href="ai.html">AI Image Processing</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+  <section>
+    <nav>
+      <div class="navcontainer">
+        <ul>
+          </form>
+          <h2>Load Horse Image</h2>
+          <form id="horseZebra" method="POST" action="/aiform" enctype="multipart/form-data">
+            <label for="file">Choose JPG image to upload</label>
+            <input type="file" name="file" size="31" id="inputImg">
+            <input type="submit" id="btnHorseZebra" value="Upload">
+          </form>
+        </ul>
+        <br>
+        </br>
+        <ul>
+          </form>
+          <h2>High Resolution Image</h2>
+          <form id="highRes" method="POST" action="/aiform2" enctype="multipart/form-data">
+            <input type="file" name="file" size="31" id="inputImg2">
+            <input type="submit" id="btnHighRes" value="Upload">
+          </form>
+        </ul>
+      </div>
+    </nav>
+    <article>
+      <img id="preview" src="#" width="400" height="400" style="border:1px solid #d3d3d3;background-color:black">
+    </article>
+  </section>
+  <footer>
+    <p>&copy; All rights reserved</p>
+  </footer>
+</body>
+</html>
