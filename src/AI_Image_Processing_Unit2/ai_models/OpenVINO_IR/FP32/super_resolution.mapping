@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<mapping>
+	<map>
+		<framework name="input" output_port_id="input" />
+		<IR name="input" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="conv1.weight" output_port_id="conv1.weight" />
+		<IR name="conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_0" output_port_id="9" />
+		<IR name="Conv_0" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_1" output_port_id="10" />
+		<IR name="Relu_1" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="conv2.weight" output_port_id="conv2.weight" />
+		<IR name="conv2.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_2" output_port_id="11" />
+		<IR name="Conv_2" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_3" output_port_id="12" />
+		<IR name="Relu_3" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="conv3.weight" output_port_id="conv3.weight" />
+		<IR name="conv3.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_4" output_port_id="13" />
+		<IR name="Conv_4" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_5" output_port_id="14" />
+		<IR name="Relu_5" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="conv4.weight" output_port_id="conv4.weight" />
+		<IR name="conv4.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_6" output_port_id="15" />
+		<IR name="Conv_6" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Constant_7" output_port_id="16" />
+		<IR name="Constant_7" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_8" output_port_id="17" />
+		<IR name="Reshape_8" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Transpose_9" output_port_id="18" />
+		<IR name="Transpose_9" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Constant_10" output_port_id="19" />
+		<IR name="Constant_10" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="output" output_port_id="output" />
+		<IR name="output" output_port_id="2" />
+	</map>
+</mapping>

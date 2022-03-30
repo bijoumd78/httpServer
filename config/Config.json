@@ -1,0 +1,31 @@
+{
+  "port": 8199,
+  "useSsl": true,
+  "channelType": [
+    {
+      "type": "console",
+      "loggingLevel": "information"
+    },
+    {
+      "type": "file",
+      "loggingLevel": "information",
+      "path": "logs/my_logFile.log",
+      "rotation": "2 K",
+      "archive": "timestamp",
+      "pattern": "%Y-%m-%d %H:%M:%S %s %t",
+      "times": "local",
+      "compress": "false",
+      "purgeAge": "12 months",
+      "purgeCount": "100"
+    },
+	{
+      "type": "database",
+      "loggingLevel": "information",
+      "name": "Dev",
+      "user": "postgres",
+      "password": "password",
+      "host": "127.0.0.1",
+      "port": "5432"
+    }
+  ]
+}
