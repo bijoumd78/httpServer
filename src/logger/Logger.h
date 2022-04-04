@@ -19,7 +19,8 @@ namespace Common::Logging {
 		static void removeChannel();
 
 		static void removeAllChannel();
-		static std::vector<std::string> Logger::searchFileLogs(const std::string& dir, const std::string& pattern);
+		static std::vector<std::string> searchFileLogs(const std::string& dir, const std::string& pattern);
+		static std::vector<std::string> searchDB(const std::string& pattern);
 
 		static void log(std::string_view level, std::string_view source, int transaction, std::string_view message);
 

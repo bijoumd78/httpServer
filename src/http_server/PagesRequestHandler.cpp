@@ -166,7 +166,7 @@ namespace http_server
 			{
 				HandleUserLogin::User_ l_user{ loginParams[0], loginParams[1] };
 
-				// Search authorized user in the database
+				// Search for authorized users in the database
 				if (const auto isFound = db.searchUser(l_user); !isFound)
 				{
 					// Send new user registration page

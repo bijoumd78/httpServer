@@ -71,6 +71,11 @@ namespace Common::Logging {
 		return result;
 	}
 
+	std::vector<std::string> Logger::searchDB(const std::string & pattern)
+	{
+		return std::vector<std::string>();
+	}
+
 	void Logger::log(std::string_view level, std::string_view source, int transaction, std::string_view msg)
 	{
 		Poco::FastMutex::ScopedLock lock(mtx_);
