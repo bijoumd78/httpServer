@@ -21,10 +21,10 @@ namespace Common::Logging {
         executeSQLQuery(sql_create_);
     }
 
-	std::vector<std::string> DatabaseLogger::search(const std::string & pattern)
-	{
-		return std::vector<std::string>();
-	}
+    std::vector<std::string> DatabaseLogger::search(const std::string & pattern)
+    { 
+        return std::vector<std::string>();
+    }
 
 	void DatabaseLogger::logFatal(std::string_view source, const int transaction_id, std::string_view msg)
     {
