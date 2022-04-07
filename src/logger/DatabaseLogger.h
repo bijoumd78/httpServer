@@ -23,6 +23,9 @@ namespace Common::Logging {
         DatabaseLogger(DatabaseLogger&&) = default;
         DatabaseLogger& operator=(DatabaseLogger&&) = default;
 
+		// Search log files
+		static std::vector<std::string> search(const std::string& pattern);
+
         void logFatal(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logError(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logWarning(std::string_view source, const int transaction_id, std::string_view msg) override;

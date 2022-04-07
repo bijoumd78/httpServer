@@ -46,7 +46,7 @@ namespace http_server
 				tmp.resize(n);
 				std::copy(buf.begin(), buf.end(), begin(tmp));
 
-				if (auto& result = Common::Logging::Logger::searchFileLogs("logs/", tmp); !result.empty()) {
+				if (auto& result = Common::Logging::Logger::search<Common::Logging::FileLogger>(tmp); !result.empty()) {
 					for (auto& e : result)
 					{
 						// Remove for now comma

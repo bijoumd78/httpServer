@@ -20,6 +20,23 @@ namespace Common::Logging {
 		channels_.push_back(channelPtr);
 	}
 
+	template<typename T>
+	void Logger::removeChannel()
+	{
+		Poco::FastMutex::ScopedLock lock(mtx_);
+
+		if (!channels_.empty())
+		{
+			auto itr = std::find_if(std::begin(channels_), std::end(channels_),
+				[](Common::Logging::ILogger* logger) { return typeid(*logger) == typeid(T); });
+
+			if (itr != channels_.end())
+			{
+				channels_.erase(itr);
+			}
+		}
+	}
+	
 	void Logger::removeAllChannel()
 	{
 		Poco::FastMutex::ScopedLock lock(mtx_);
@@ -29,51 +46,23 @@ namespace Common::Logging {
 		}		
 	}
 
-	std::vector<std::string> Logger::searchFileLogs(const std::string& dir, const std::string& pattern)
+	template<typename T>
+	std::vector<std::string> Logger::search(const std::string& pattern)
 	{
 		Poco::FastMutex::ScopedLock lock(mtx_);
 
-		if (Poco::File Dir(dir); !Dir.isDirectory())
+		if (!channels_.empty())
 		{
-			throw std::invalid_argument("Search directory does not exist");
-		}
+			auto itr = std::find_if(std::begin(channels_), std::end(channels_),
+				[](Common::Logging::ILogger* logger) { return typeid(*logger) == typeid(T); });
 
-		std::vector<std::string> result;
-		Poco::RegularExpression re(pattern, Poco::RegularExpression::RE_CASELESS);
-
-		Poco::DirectoryIterator it(dir);
-		Poco::DirectoryIterator end;
-		while (it != end)
-		{
-			Poco::Path p(it->path());
-			std::ifstream infile(p.toString());
-			std::string line;
-
-			while (std::getline(infile, line))
+			if (itr != channels_.end())
 			{
-				Poco::RegularExpression::Match mtch;
-				if (re.match(line, mtch))
-				{
-					std::vector<std::string> vec;
-					vec.push_back(Poco::DateTimeFormatter::format(it->getLastModified(), Poco::DateTimeFormat::SORTABLE_FORMAT));
-					vec.push_back(p.getFileName());
-					Poco::StringTokenizer tok(line, " ", Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
-					vec.push_back(tok[0] + " " + tok[1]);
-					vec.push_back(tok[2].substr(1, tok[2].length() - 3));
-					vec.push_back(tok[3]);
-					vec.push_back(tok[4]);
-					vec.push_back(Poco::cat(std::string(" "), tok.begin() + 5, tok.end()));
-					result.push_back(Poco::cat(std::string(", "), vec.begin(), vec.end()));
-				}
+				return T::search(pattern);
 			}
-			++it;
 		}
-		return result;
-	}
 
-	std::vector<std::string> Logger::searchDB(const std::string & pattern)
-	{
-		return std::vector<std::string>();
+		return std::vector<std::string>{};
 	}
 
 	void Logger::log(std::string_view level, std::string_view source, int transaction, std::string_view msg)

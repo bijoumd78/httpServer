@@ -2,10 +2,6 @@
 #include "RequestHandlerFactory.h"
 
 #include "Logger.h"
-#include "ConsoleLogger.h"
-#include "FileLogger.h"
-#include "DatabaseLogger.h"
-
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocketImpl.h>
 #include <Poco/Util/HelpFormatter.h>

@@ -1,4 +1,7 @@
 #pragma once
+#include "ConsoleLogger.h"
+#include "FileLogger.h"
+#include "DatabaseLogger.h"
 #include <Poco/Mutex.h>
 #include <string_view>
 #include <vector>
@@ -19,8 +22,9 @@ namespace Common::Logging {
 		static void removeChannel();
 
 		static void removeAllChannel();
-		static std::vector<std::string> searchFileLogs(const std::string& dir, const std::string& pattern);
-		static std::vector<std::string> searchDB(const std::string& pattern);
+
+		template<typename T>
+		static std::vector<std::string> search(const std::string& pattern);
 
 		static void log(std::string_view level, std::string_view source, int transaction, std::string_view message);
 
@@ -29,21 +33,15 @@ namespace Common::Logging {
 		static Poco::FastMutex mtx_;
 	};
 
-	template<typename T>
-	void Logger::removeChannel()
-	{
-		Poco::FastMutex::ScopedLock lock(mtx_);
+	// Explicit template instantiation
+	template void Logger::removeChannel<ConsoleLogger>();
+	template void Logger::removeChannel<FileLogger>();
+	template void Logger::removeChannel<DatabaseLogger>();
 
-		if (!channels_.empty())
-		{
-			auto itr = std::find_if(std::begin(channels_), std::end(channels_), 
-				[](Common::Logging::ILogger* logger) { return typeid(*logger) == typeid(T); });
 
-			if (itr != channels_.end())
-			{
-				channels_.erase(itr);
-			}
-		}
-	}
+	// Explicit template instantiation
+	template std::vector<std::string> Logger::search<FileLogger>(const std::string& pattern);
+	template std::vector<std::string> Logger::search<DatabaseLogger>(const std::string& pattern);
+
 }
 
