@@ -1,4 +1,3 @@
-//#include <pqxx/pqxx> 
 #include "DatabaseLogger.h"
 #include <Poco/Timestamp.h>
 #include <Poco/DateTimeFormatter.h>
