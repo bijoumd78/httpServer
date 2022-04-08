@@ -36,7 +36,7 @@ namespace HandleUserLogin
 		User_ l_user;
 		Statement select(session_);
 		std::stringstream ss;
-		ss << "SELECT Email, Password FROM User WHERE Email like '%" << user.email << "%'";
+		ss << "SELECT Email, Password FROM User WHERE Email LIKE '%" << user.email << "%'";
 		select << ss.str(), into(l_user.email), into(l_user.password), now;
 		select.execute();
 
