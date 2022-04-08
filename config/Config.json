@@ -21,6 +21,7 @@
 	{
       "type": "database",
       "loggingLevel": "information",
+      "name": "Dev",
       "user": "postgres",
       "password": "password",
       "host": "127.0.0.1",
