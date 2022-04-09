@@ -7,19 +7,18 @@ using Poco::Net::WebSocket;
 
 namespace http_server
 {
-	class WebSocketReqHandler : public Poco::Net::HTTPRequestHandler
-	{
-	public:
-		~WebSocketReqHandler();
+    class WebSocketReqHandler : public Poco::Net::HTTPRequestHandler
+    {
+    public:
+        ~WebSocketReqHandler();
 
-		void handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)override;
+        void handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)override;
+        void send(const std::string& buffer);
+        void shutdown();
 
-		void send(const std::string& buffer);
-		void shutdown();
-
-	private:
-		WebSocket* pWS_{};
-		int        flags_{};
-	};
+    private:
+        WebSocket* pWS_{};
+        int        flags_{};
+    };
 }
 

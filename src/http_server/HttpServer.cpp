@@ -1,12 +1,10 @@
 #include "HttpServer.h"
 #include "RequestHandlerFactory.h"
-
 #include "Logger.h"
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocketImpl.h>
 #include <Poco/Util/HelpFormatter.h>
 #include <Poco/Data/SQLite/Connector.h>
-
 
 namespace
 {
@@ -33,7 +31,6 @@ namespace
     };
 
 } // anonymous namespace
-
 
 namespace http_server
 {
@@ -99,7 +96,6 @@ namespace http_server
             waitForTerminationRequest();
             server.stopAll();
         }
-
         return Poco::Util::Application::EXIT_OK;
     }
 

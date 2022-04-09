@@ -149,7 +149,6 @@ namespace Common::Logging {
         {
             log("ERROR", source, transaction_id, msg);
         }
-
     }
 
     void DatabaseLogger::logWarning(std::string_view source, const int transaction_id, std::string_view msg)

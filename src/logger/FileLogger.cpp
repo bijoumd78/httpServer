@@ -8,9 +8,7 @@
 #include <fstream>
 
 namespace Common::Logging {
-
-	std::string FileLogger::logDir_{};
-
+    std::string FileLogger::logDir_{};
     FileLogger::FileLogger(std::string_view configFile):
         pFC_{ new FormattingChannel(pPF_, pFile_) },
         pConfig_{ std::make_unique<Configuration>(configFile) }
@@ -23,7 +21,7 @@ namespace Common::Logging {
         setFileProperties(pFile_, pPF_, pConfig_.get(), pFC_, logFile);
     }
 
-    std::vector<std::string> FileLogger::search(const std::string & pattern)
+    std::vector<std::string> FileLogger::search(const std::string& pattern)
     {
         if (Poco::File Dir(logDir_); !Dir.isDirectory())
         {
@@ -32,7 +30,6 @@ namespace Common::Logging {
 
         std::vector<std::string> result;
         Poco::RegularExpression re(pattern, Poco::RegularExpression::RE_CASELESS);
-
         Poco::DirectoryIterator it(logDir_);
         Poco::DirectoryIterator end;
         while (it != end)
@@ -102,7 +99,6 @@ namespace Common::Logging {
         filePtr->setProperty("compress", configPtr->getFileCompress());
         filePtr->setProperty("purgeAge", configPtr->getFilePurgeAge());
         filePtr->setProperty("purgeCount", configPtr->getFilePurgeCount());
-
         patternFormatterPtr->setProperty("pattern", configPtr->getFilePattern());
         patternFormatterPtr->setProperty("times", configPtr->getFileTimes());
         Poco::Logger::root().setLevel(configPtr->getFileLoggingLevel());
