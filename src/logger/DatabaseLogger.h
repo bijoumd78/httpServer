@@ -66,6 +66,7 @@ namespace Common::Logging {
 
         // Search log files
         static std::vector<std::string> search(const std::string& pattern);
+		void insertSingleRow(Row& row);
         static void insertMultipleRows(multipleRows_t& rows);
 
         void logFatal(std::string_view source, const int transaction_id, std::string_view msg) override;
@@ -78,7 +79,6 @@ namespace Common::Logging {
     private:
         void log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg);
         void executeQuery(std::string_view query);
-        void insertSingleRow(Row& row);
         std::string checkJsonFromat(std::string_view msg)const;
 
         std::unique_ptr<Configuration> pConfig_;

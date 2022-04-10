@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.6 FATAL_ERROR)
 
 project(AIRESTAPI LANGUAGES CXX VERSION 1.0.0)
+enable_testing()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -93,12 +94,10 @@ endif()
 
 #add_subdirectory(include)
 add_subdirectory(src)
-#include_directories(test)
 
 # Testing code
-#include(CTest)
-#enable_testing()
-
-#if(BUILD_TESTING)
-    #TODO:
-#endif(BUILD_TESTING)
+option(ENABLE_UNIT_TESTS "Enable unit tests" ON)
+message(STATUS "Enable testing: ${ENABLE_UNIT_TESTS}")
+if(ENABLE_UNIT_TESTS)
+ add_subdirectory(tests)
+endif(ENABLE_UNIT_TESTS)
