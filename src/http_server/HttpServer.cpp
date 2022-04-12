@@ -75,11 +75,11 @@ namespace http_server
             Common::Logging::ConsoleLogger pConsolechannel(configFile_);
             Common::Logging::Logger::addChannel(&pConsolechannel);
 
-            Common::Logging::FileLogger pFilechannel(configFile_);
-            Common::Logging::Logger::addChannel(&pFilechannel);
+            //Common::Logging::FileLogger pFilechannel(configFile_);
+            //Common::Logging::Logger::addChannel(&pFilechannel);
 
-            //Common::Logging::DatabaseLogger pDatabasechannel(configFile_);
-            //Common::Logging::Logger::addChannel(&pDatabasechannel);
+            Common::Logging::DatabaseLogger pDatabasechannel(configFile_);
+            Common::Logging::Logger::addChannel(&pDatabasechannel);
 
             Poco::Net::HTTPServerParams::Ptr parameters = new Poco::Net::HTTPServerParams();
             parameters->setTimeout(10000);

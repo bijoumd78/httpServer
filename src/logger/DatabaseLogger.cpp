@@ -207,6 +207,32 @@ namespace Common::Logging {
         catch (const StatementException& se) { std::cout << se.displayText() << std::endl; }
     }
 
+    Row  DatabaseLogger::selectSingleRow(const std::string& token)
+    {
+        std::vector<std::string> timestamps;
+        std::vector<std::string> levels;
+        std::vector<std::string> sources;
+        std::vector<int>         transactionIds;
+        std::vector<std::string> messages;
+
+        std::stringstream ss;
+        ss << "SELECT * FROM logs WHERE to_tsvector(logs::text) @@ to_tsquery('" << token << "')";
+        try { *pSession_ << ss.str(), into(timestamps), into(levels), into(sources), into(transactionIds), into(messages), now; }
+        catch (ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
+
+        Row row;
+        if (!timestamps.empty() && !levels.empty() && !sources.empty() && !transactionIds.empty() && !messages.empty())
+        {
+            row.timestamp_ = timestamps[0];
+            row.level_ = levels[0];
+            row.source_ = sources[0];
+            row.transactionId_ = transactionIds[0];
+            row.message_ = messages[0];
+        }
+
+        return row;
+    }
+
     void DatabaseLogger::insertMultipleRows(multipleRows_t& rows)
     {
         const auto SIZE = rows.size();

@@ -11,6 +11,11 @@ namespace Common::Logging {
     using multipleRows_t = std::vector<tableData_t>;
 
     struct Row {
+        Row()
+        {
+            transactionId_ = -1;
+        }
+
         Row(const std::string& timestamp, const std::string& level,
             const std::string& source, int transactionId, const std::string& message) :
             timestamp_{ timestamp },
@@ -66,8 +71,10 @@ namespace Common::Logging {
 
         // Search log files
         static std::vector<std::string> search(const std::string& pattern);
-		void insertSingleRow(Row& row);
+        void insertSingleRow(Row& row);
+        Row  selectSingleRow(const std::string& token);
         static void insertMultipleRows(multipleRows_t& rows);
+        void executeQuery(std::string_view query);
 
         void logFatal(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logError(std::string_view source, const int transaction_id, std::string_view msg) override;
@@ -78,7 +85,6 @@ namespace Common::Logging {
 
     private:
         void log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg);
-        void executeQuery(std::string_view query);
         std::string checkJsonFromat(std::string_view msg)const;
 
         std::unique_ptr<Configuration> pConfig_;
