@@ -36,6 +36,7 @@ namespace Common::Logging {
         std::string              getDbHostAddr()const;
         std::string              getDbPort()const;
         std::string              getDbLoggingLevel()const;
+        std::string              getDbTableName()const;
 
         void setPort(unsigned int port);
         void setUseSsl(bool useSsl);
@@ -55,6 +56,7 @@ namespace Common::Logging {
         void setDbHostAddr(std::string_view dbHostAddr);
         void setDbLoggingLevel(std::string_view dbLoggingLevel);
         void setDbPort(std::string_view dbPort);
+        void setDbTableName(std::string_view dbTableName);
 
     private:
         template<typename T>
@@ -86,6 +88,7 @@ namespace Common::Logging {
             std::string password{"password"};
             std::string host{"127.0.0.1"};
             std::string port{"5432"};
+            std::string tableName{ "logs" };
         }database_;
 
         AutoPtr<JSONConfiguration> pConfJson{ new JSONConfiguration };

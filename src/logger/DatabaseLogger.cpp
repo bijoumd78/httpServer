@@ -72,8 +72,9 @@ namespace Poco {
 
 
 namespace Common::Logging {
-    // static data member
+    // static data members
     std::unique_ptr<Poco::Data::Session>  DatabaseLogger::pSession_;
+    std::string                           DatabaseLogger::tableName_;
 
     using namespace Poco::Data::Keywords;
     using Poco::Data::PostgreSQL::PostgreSQLException;
@@ -88,8 +89,10 @@ namespace Common::Logging {
         port_{ pConfig_->getDbPort() },
         level_{ pConfig_->getDbLoggingLevel() }
     {
+        tableName_ = pConfig_->getDbTableName();
+
         // Register connector
-        Poco::Data::PostgreSQL::Connector::registerConnector();
+        Poco::Data::PostgreSQL::Connector::registerConnector(); 
 
         // Connection strings
         std::string dbConnString;
@@ -102,7 +105,15 @@ namespace Common::Logging {
         catch (const Poco::Data::ConnectionFailedException& ex)
         { std::cout << "Postgres database connection exception: " << ex.displayText() << std::endl; }
 
-        executeQuery(sql_create_);
+        // Create Table
+        std::string       sql_create{ "CREATE TABLE IF NOT EXISTS " + tableName_ + " (" \
+                                      "timestamp        TIMESTAMPTZ,"                   \
+                                      "level            TEXT         NOT NULL,"         \
+                                      "source           TEXT         NOT NULL,"         \
+                                      "transaction_id    INT          NOT NULL,"        \
+                                      "message          JSONB               );" };
+
+        executeQuery(sql_create);
     }
 
     DatabaseLogger::~DatabaseLogger()
@@ -120,7 +131,7 @@ namespace Common::Logging {
         std::vector<std::string> messages;
 
         std::stringstream ss;
-        ss << "SELECT * FROM logs WHERE to_tsvector(logs::text) @@ to_tsquery('" << pattern << "')";
+        ss << "SELECT * FROM " + tableName_ + " WHERE to_tsvector(" + tableName_ + "::text) @@ to_tsquery('" << pattern << "')";
         try { *pSession_ << ss.str(), into(timestamps), into(levels), into(sources), into(transactionIds), into(messages), now; }
         catch (ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
 
@@ -192,16 +203,21 @@ namespace Common::Logging {
         insertSingleRow(row);
     }
 
-    void DatabaseLogger::executeQuery(std::string_view query)
+    void DatabaseLogger::executeQuery(const std::string& query)
     {
         try { *pSession_ << query, now; }
         catch (const ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
     }
 
+    std::string DatabaseLogger::getTableName()
+    {
+        return tableName_;
+    }
+
     void DatabaseLogger::insertSingleRow(Row& row)
     {
         Poco::Data::Statement stmt(*pSession_);
-        stmt << "INSERT INTO logs VALUES ($1,$2,$3,$4,$5)", use(row.timestamp_), use(row.level_),
+        stmt << "INSERT INTO " + tableName_ + " VALUES ($1,$2,$3,$4,$5)", use(row.timestamp_), use(row.level_),
             use(row.source_), use(row.transactionId_), use(row.message_);
         try { stmt.execute(); }
         catch (const StatementException& se) { std::cout << se.displayText() << std::endl; }
@@ -216,7 +232,7 @@ namespace Common::Logging {
         std::vector<std::string> messages;
 
         std::stringstream ss;
-        ss << "SELECT * FROM logs WHERE to_tsvector(logs::text) @@ to_tsquery('" << token << "')";
+        ss << "SELECT * FROM " + tableName_ + " WHERE to_tsvector(" + tableName_ + "::text) @@ to_tsquery('" << token << "')";
         try { *pSession_ << ss.str(), into(timestamps), into(levels), into(sources), into(transactionIds), into(messages), now; }
         catch (ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
 
@@ -256,7 +272,7 @@ namespace Common::Logging {
             });
 
         Poco::Data::Statement stmt(*pSession_);
-        stmt << "INSERT INTO logs VALUES ($1,$2,$3,$4,$5)", use(timestamps), use(levels),
+        stmt << "INSERT INTO " + tableName_ + " VALUES ($1,$2,$3,$4,$5)", use(timestamps), use(levels),
             use(sources), use(transactionIds), use(messages);
         try { stmt.execute(); }
         catch (const StatementException& se) { std::cout << se.displayText() << std::endl; }

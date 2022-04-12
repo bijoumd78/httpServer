@@ -51,6 +51,7 @@ namespace Common::Logging {
                 database_.password     = object3->getValue<std::string>("password");
                 database_.host         = object3->getValue<std::string>("host");
                 database_.port         = object3->getValue<std::string>("port");
+                database_.tableName    = object3->getValue<std::string>("tableName");
 
                 getConfigParams<std::string>(database_.loggingLevel, "loggingLevel", [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
                 getConfigParams<std::string>(database_.name,         "name",         [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
@@ -58,6 +59,7 @@ namespace Common::Logging {
                 getConfigParams<std::string>(database_.password,     "password",     [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
                 getConfigParams<std::string>(database_.host,         "host",         [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
                 getConfigParams<std::string>(database_.port,         "port",         [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
+                getConfigParams<std::string>(database_.tableName,    "tableName",    [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
             }
             else
             {
@@ -157,6 +159,11 @@ namespace Common::Logging {
         return database_.loggingLevel;
     }
 
+    std::string Configuration::getDbTableName() const
+    {
+        return database_.tableName;
+    }
+
     void Configuration::setPort(unsigned int port)
     {
         port_ = port;
@@ -245,5 +252,10 @@ namespace Common::Logging {
     void Configuration::setDbPort(std::string_view dbPort)
     {
         database_.port = dbPort;
+    }
+
+    void Configuration::setDbTableName(std::string_view dbTableName)
+    {
+        database_.tableName = dbTableName;
     }
 }

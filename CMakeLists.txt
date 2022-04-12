@@ -92,12 +92,13 @@ if(NOT OpenCV_FOUND)
     return()
 endif()
 
-#add_subdirectory(include)
-add_subdirectory(src)
-
 # Testing code
 option(ENABLE_UNIT_TESTS "Enable unit tests" ON)
 message(STATUS "Enable testing: ${ENABLE_UNIT_TESTS}")
+
+#add_subdirectory(include)
+add_subdirectory(src)
+
 if(ENABLE_UNIT_TESTS)
  add_subdirectory(tests)
 endif(ENABLE_UNIT_TESTS)

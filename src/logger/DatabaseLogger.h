@@ -74,7 +74,8 @@ namespace Common::Logging {
         void insertSingleRow(Row& row);
         Row  selectSingleRow(const std::string& token);
         static void insertMultipleRows(multipleRows_t& rows);
-        void executeQuery(std::string_view query);
+        void executeQuery(const std::string& query);
+        static std::string getTableName();
 
         void logFatal(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logError(std::string_view source, const int transaction_id, std::string_view msg) override;
@@ -89,17 +90,12 @@ namespace Common::Logging {
 
         std::unique_ptr<Configuration> pConfig_;
         static std::unique_ptr<Poco::Data::Session> pSession_;
-        std::string       user_{ "postgres" };
-        std::string       password_{ "password" };
-        std::string       hostaddr_{ "127.0.0.1" };
-        std::string       port_{ "5432" };
-        std::string       level_{ "information" };
-        std::string       sql_create_{ "CREATE TABLE IF NOT EXISTS logs ("       \
-                                       "timestamp        TIMESTAMPTZ,"           \
-                                       "level            TEXT         NOT NULL," \
-                                       "source           TEXT         NOT NULL," \
-                                       "transaction_id    INT          NOT NULL," \
-                                       "message          JSONB               );" };
+        std::string        user_{ "postgres" };
+        std::string        password_{ "password" };
+        std::string        hostaddr_{ "127.0.0.1" };
+        std::string        port_{ "5432" };
+        std::string        level_{ "information" };
+        static std::string tableName_;
     };
 
 }

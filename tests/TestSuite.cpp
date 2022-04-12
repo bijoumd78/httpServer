@@ -19,15 +19,18 @@ protected:
     ~DatabaseLoggerTest() override {}
 
    void SetUp() override{
+       // Create table 
        pDb_ = new  DatabaseLogger(configFile_);
    }
 
    void TearDown() override{
-       delete pDb_;
+      // Drop table
+      pDb_->executeQuery("DROP TABLE IF EXISTS " + DatabaseLogger::getTableName() + ";");
+      delete pDb_;
    }
 
 private:
-    std::string configFile_{ "Config.json" };
+    std::string configFile_{ "Config_Tests.json" };
 };
 
 TEST_F(DatabaseLoggerTest, insertSingleRow)

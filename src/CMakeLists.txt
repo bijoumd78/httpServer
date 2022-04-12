@@ -34,6 +34,15 @@ add_custom_command(TARGET AIRESTAPI
                     ${PROJECT_SOURCE_DIR}/config/Config.JSON 
                     $<TARGET_FILE_DIR:AIRESTAPI>)
 
+if(ENABLE_UNIT_TESTS)
+    message (STATUS "Copying configuration file Config_Tests.json to the binary directory")
+    add_custom_command(TARGET AIRESTAPI 
+                        POST_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+                        ${PROJECT_SOURCE_DIR}/config/Config_Tests.JSON 
+                        $<TARGET_FILE_DIR:AIRESTAPI>)
+endif()
+
 message (STATUS "Copying wwwroot directory to the binary directory")
 add_custom_command(TARGET AIRESTAPI 
                     POST_BUILD
