@@ -1,5 +1,3 @@
-//#include "Logger.h"
-//#include <gtest/gtest.h>
 #include "DatabaseLoggerTest.h"
 #include "FileLoggerTest.h"
 #include <Poco/Data/PostgreSQL/PostgreSQLException.h>
