@@ -60,6 +60,11 @@ namespace Common::Logging {
         return result;
     }
 
+    std::string FileLogger::getLogdirectory()
+    {
+        return logDir_;
+    }
+
 	void FileLogger::logFatal(std::string_view source, const int transaction, std::string_view msg)
     {
         Poco::Logger::root().fatal("[FATAL]:    " + std::string{ source.data() + std::string{" "} + std::to_string(transaction) + std::string{" "} + msg.data() });

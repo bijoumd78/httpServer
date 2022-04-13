@@ -1,37 +1,15 @@
-#include "Logger.h"
-#include <gtest/gtest.h>
+//#include "Logger.h"
+//#include <gtest/gtest.h>
+#include "DatabaseLoggerTest.h"
+#include "FileLoggerTest.h"
 #include <Poco/Data/PostgreSQL/PostgreSQLException.h>
 #include <Poco/StringTokenizer.h>
 #include <sstream>
 
 namespace test::AIRESTAPI{
-    using namespace Common::Logging;
+    using namespace  Common::Logging;
     using namespace Poco::Data::Keywords;
     using Poco::Data::PostgreSQL::ConnectionException;
-
-// The fixture for testing DatabaseLogger class
-class DatabaseLoggerTest : public ::testing::Test
-{
-public:
-    DatabaseLogger* pDb_;
-
-protected:
-    ~DatabaseLoggerTest() override {}
-
-   void SetUp() override{
-       // Create table 
-       pDb_ = new  DatabaseLogger(configFile_);
-   }
-
-   void TearDown() override{
-      // Drop table
-      pDb_->executeQuery("DROP TABLE IF EXISTS " + DatabaseLogger::getTableName() + ";");
-      delete pDb_;
-   }
-
-private:
-    std::string configFile_{ "Config_Tests.json" };
-};
 
 TEST_F(DatabaseLoggerTest, insertSingleRow)
 {
@@ -40,7 +18,7 @@ TEST_F(DatabaseLoggerTest, insertSingleRow)
     pDb_->insertSingleRow(row);
 
     // Retrieve the data from the database
-    const auto results = pDb_->search(data[2].data());
+    const auto results = DatabaseLogger::search(data[2].data());
 
     std::vector<std::string> vec;
     if (!results.empty())
@@ -66,11 +44,10 @@ TEST_F(DatabaseLoggerTest, insertMultipleRows)
 {
     tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_MULTIPLE_ROWS", "10", "{\"message\": \"This is a test\"}" };
     multipleRows_t rows(10, data);
-    pDb_->insertMultipleRows(rows);
+    DatabaseLogger::insertMultipleRows(rows);
 
     // Retrieve the data from the database
-    const auto results = pDb_->search("TEST_MULTIPLE_ROWS");
-    const auto SIZE = results.size();
+    const auto results = DatabaseLogger::search("TEST_MULTIPLE_ROWS");
 
     ASSERT_EQ(results.size(), rows.size());
 
@@ -99,13 +76,41 @@ TEST_F(DatabaseLoggerTest, searchDB)
 {
     tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_SEARCH_MULTIPLE_ROWS", "100", "{\"message\": \"This is a test\"}" };
     multipleRows_t rows(10, data);
-    pDb_->insertMultipleRows(rows);
+    DatabaseLogger::insertMultipleRows(rows);
 
     // Retrieve the data from the database
-    const auto results = pDb_->search("TEST_SEARCH_MULTIPLE_ROWS");
-    const auto SIZE = results.size();
+    const auto results = DatabaseLogger::search("TEST_SEARCH_MULTIPLE_ROWS");
 
     ASSERT_EQ(results.size(), rows.size());
+}
+
+TEST_F(FileLoggerTest, searchLOG)
+{
+    // Log some values
+    pFile_->logInfo("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+    pFile_->logDebug("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+    pFile_->logWarning("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+    pFile_->logFatal("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+    pFile_->logError("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+    pFile_->logTrace("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+
+    const auto result1 = FileLogger::search("Info");
+    const auto result2 = FileLogger::search("Debug");
+    const auto result3 = FileLogger::search("Warning");
+    const auto result4 = FileLogger::search("Fatal");
+    const auto result5 = FileLogger::search("Error");
+    const auto result6 = FileLogger::search("Trace");
+    
+    EXPECT_EQ(result1.size(), 1);
+    EXPECT_EQ(result2.size(), 1);
+    EXPECT_EQ(result3.size(), 1);
+    EXPECT_EQ(result4.size(), 1);
+    EXPECT_EQ(result5.size(), 1);
+    EXPECT_EQ(result6.size(), 1);
+
+    const auto results = FileLogger::search("TEST_SEARCH_LOG");
+
+    EXPECT_EQ(results.size(), 6);
 }
 
 }// namespace test::AIRESTAPI

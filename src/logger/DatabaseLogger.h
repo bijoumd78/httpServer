@@ -59,7 +59,7 @@ namespace Common::Logging {
     {
     public:
         explicit DatabaseLogger(std::string_view configFile);
-        ~DatabaseLogger();
+        ~DatabaseLogger()override;
 
         // Prevent copy construction and assignment operation.
         DatabaseLogger(const DatabaseLogger&) = delete;
