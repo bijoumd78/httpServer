@@ -220,7 +220,7 @@ namespace http_server
                 inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
                 inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
 
-                // Stall the computation for 500 ms the Check if input image exist
+                // Stall the computation for 500 ms for image upload to complete
                 Poco::File file(inputArgs.inputImagePath_);
                 do
                 {
@@ -255,7 +255,7 @@ namespace http_server
                 inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
                 inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
 
-                // Stall the computation for 500 ms the Check if input image exist
+                // Stall the computation for 500 ms for image upload to complete
                 Poco::File file(inputArgs.inputImagePath_);
                 do
                 {
