@@ -9,6 +9,7 @@
 #include <Poco/Path.h>
 #include <Poco/File.h>
 #include <Poco/Delegate.h>
+#include <Poco/Thread.h>
 #include <sstream>
 #include <string>
 
@@ -219,6 +220,14 @@ namespace http_server
                 inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
                 inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
 
+                // Stall the computation for 500 ms the Check if input image exist
+                Poco::File file(inputArgs.inputImagePath_);
+                do
+                {
+                    Poco::Thread::sleep(500);
+                } while (!file.isFile());
+
+
                 AI::ImageProcessing::HandleImageProcessing<AI::ImageProcessingUnit::InputArg> proc;
                 AI::ImageProcessingUnit::RunCycleganAPI horseZebraImg;
                 proc.processEvent += Poco::delegate(&horseZebraImg, &AI::ImageProcessingUnit::RunCycleganAPI::processImage);
@@ -245,6 +254,13 @@ namespace http_server
                 inputArgs.xmlModel_ = "C:/Users/bijou/Desktop/PocoServer/PocoServer/src/AI_Image_Processing_Unit2/ai_models/OpenVINO_IR/FP32/super_resolution.xml";
                 inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
                 inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
+
+                // Stall the computation for 500 ms the Check if input image exist
+                Poco::File file(inputArgs.inputImagePath_);
+                do
+                {
+                    Poco::Thread::sleep(500);
+                } while (!file.isFile());
 
                 AI::ImageProcessing::HandleImageProcessing<AI::ImageProcessingUnit2::InputArgList> proc;
                 AI::ImageProcessingUnit2::RunHighResNet highResImg;

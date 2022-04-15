@@ -82,7 +82,7 @@ namespace http_server
             //Common::Logging::Logger::addChannel(&pDatabasechannel);
 
             Poco::Net::HTTPServerParams::Ptr parameters = new Poco::Net::HTTPServerParams();
-            parameters->setTimeout(10000);
+            parameters->setTimeout(100000);
             parameters->setMaxQueued(100);
             parameters->setMaxThreads(12);
 
