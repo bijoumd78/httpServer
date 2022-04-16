@@ -183,8 +183,17 @@ namespace http_server
                 // At this point, I assume the user password has been confirmed
                 HandleUserLogin::User_ l_user{ loginParams[0], loginParams[1] };
 
-                // Insert the new user into the database
-                db.insertUser(l_user);
+                // We need to make sure the user does not already exist.
+                // Each new user needs to be unique (No duplicated record)
+                if (const auto isFound = db.searchUser(l_user); !isFound)
+                {
+                    // Insert the new user into the database
+                    db.insertUser(l_user);
+                }
+                else
+                {
+                    Common::Logging::Logger::log("warning", "UserLogin", -1, "User already exists.");
+                }
 
                 // Return the login page
                 res.setChunkedTransferEncoding(true);
