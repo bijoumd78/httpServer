@@ -53,6 +53,25 @@ namespace HandleUserLogin
         return isFound;
     }
 
+    bool UserLoginDB::searchUserEmail(const User_ & user) const
+    {
+        bool isFound{ false };
+        User_ l_user;
+        Statement select(session_);
+        std::stringstream ss;
+        ss << "SELECT Email, Password FROM User WHERE Email LIKE '%" << user.email << "%'";
+        select << ss.str(), into(l_user.email), into(l_user.password), now;
+        select.execute();
+
+        if (!l_user.email.empty())
+        {
+            Common::Logging::Logger::log("warning", "UserLogin", -1, "User email already exist!");
+            isFound = true;
+        }
+
+        return isFound;
+    }
+
     std::string UserLoginDB::gethashKey(std::string_view message) const
     {
         // we'll compute a HMAC-SHA1

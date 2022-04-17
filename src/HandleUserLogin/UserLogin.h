@@ -18,7 +18,7 @@ namespace HandleUserLogin {
 
         void insertUser(const User_& user)const;
         [[nodiscard]] bool searchUser(const User_& user)const;
-
+        [[nodiscard]] bool searchUserEmail(const User_& user)const;
 
     private:
         // Utility function

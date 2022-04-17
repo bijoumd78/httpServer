@@ -183,16 +183,21 @@ namespace http_server
                 // At this point, I assume the user password has been confirmed
                 HandleUserLogin::User_ l_user{ loginParams[0], loginParams[1] };
 
-                // We need to make sure the user does not already exist.
+                // We need to make sure that the user does not already exist.
                 // Each new user needs to be unique (No duplicated record)
-                if (const auto isFound = db.searchUser(l_user); !isFound)
+                if (const auto isFound = db.searchUserEmail(l_user); !isFound)
                 {
                     // Insert the new user into the database
                     db.insertUser(l_user);
                 }
                 else
                 {
-                    Common::Logging::Logger::log("warning", "UserLogin", -1, "User already exists.");
+                    // Try again. User email already exists.
+                    res.setChunkedTransferEncoding(true);
+                    const std::string tmp{ root + "/try_again_registration.html" };
+                    res.sendFile(tmp, "text/html");
+                    res.setStatus(HTTPResponse::HTTPStatus::HTTP_UNAUTHORIZED);
+                    return;
                 }
 
                 // Return the login page
