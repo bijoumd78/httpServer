@@ -74,7 +74,7 @@ namespace http_server
 
     void http_server::PagesRequestHandler::httpGet(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)
     {
-        Common::Logging::Logger::log("information", "source", -1, "HttpGet is called");
+        //Common::Logging::Logger::log("information", "source", -1, "HttpGet is called");
 
         // Prepare response
         res.setChunkedTransferEncoding(true);
@@ -141,7 +141,7 @@ namespace http_server
 
     void http_server::PagesRequestHandler::httpPost(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)
     {
-        Common::Logging::Logger::log("information", "source", -1, "HttpPost is called");
+        //Common::Logging::Logger::log("information", "source", -1, "HttpPost is called");
 
         // Handle data from HTTP form 
         FormPartHandler formHandler;

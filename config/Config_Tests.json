@@ -9,7 +9,7 @@
     {
       "type": "file",
       "loggingLevel": "trace",
-      "path": "test/logFile.log",
+      "path": "test/log.txt",
       "rotation": "2 K",
       "archive": "timestamp",
       "pattern": "%Y-%m-%d %H:%M:%S %s %t",
