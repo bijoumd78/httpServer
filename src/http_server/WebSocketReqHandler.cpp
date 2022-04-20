@@ -27,7 +27,7 @@ namespace http_server
         {
             if (!pWS_)
             {
-                pWS_ = new WebSocket(req, res);
+                pWS_ = std::make_unique<WebSocket>(req, res);
                 constexpr const int MAXPAYLOAD{ 1024 };
                 pWS_->setMaxPayloadSize(MAXPAYLOAD);
                 Timespan ts(600, 0);
@@ -87,7 +87,6 @@ namespace http_server
         if (pWS_)
         {
             pWS_->shutdown();
-            delete pWS_;
         }
     }
 }

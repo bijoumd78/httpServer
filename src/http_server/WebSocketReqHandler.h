@@ -2,6 +2,7 @@
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/WebSocket.h>
 #include <vector>
+#include <memory>
 
 using Poco::Net::WebSocket;
 
@@ -17,8 +18,8 @@ namespace http_server
         void shutdown();
 
     private:
-        WebSocket* pWS_{};
-        int        flags_{};
+        std::unique_ptr<WebSocket> pWS_;
+        int                        flags_{};
     };
 }
 
