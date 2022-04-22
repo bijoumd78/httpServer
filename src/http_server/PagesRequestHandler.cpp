@@ -1,6 +1,7 @@
 #include "PagesRequestHandler.h"
 #include "Logger.h"
 #include "UserLogin.h"
+#include "RedisCache.h"
 #include "HandleImageProcessing.h"
 #include <Poco/RegularExpression.h>
 #include <Poco/Net/HTMLForm.h>
@@ -74,8 +75,6 @@ namespace http_server
 
     void http_server::PagesRequestHandler::httpGet(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)
     {
-        //Common::Logging::Logger::log("information", "source", -1, "HttpGet is called");
-
         // Prepare response
         res.setChunkedTransferEncoding(true);
         Poco::Path path(req.getURI());
@@ -141,8 +140,6 @@ namespace http_server
 
     void http_server::PagesRequestHandler::httpPost(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)
     {
-        //Common::Logging::Logger::log("information", "source", -1, "HttpPost is called");
-
         // Handle data from HTTP form 
         FormPartHandler formHandler;
 
@@ -167,8 +164,14 @@ namespace http_server
             {
                 HandleUserLogin::User_ l_user{ loginParams[0], loginParams[1] };
 
-                // Search for authorized users in the database
-                if (const auto isFound = db.searchUser(l_user); !isFound)
+                // Search user in the cache first and then in the database
+                if (const auto& result = rediscache::RedisCache::get(loginParams[0]); 
+                    (result != std::nullopt) && result.value() == db.gethashKey(loginParams[1]))
+                {
+                    // Found user
+                    Common::Logging::Logger::log("information", "source", -1, "Cache hit !");
+                }
+                else if (const auto isFound = db.searchUser(l_user); !isFound)
                 {
                     // Send new user registration page
                     res.setChunkedTransferEncoding(true);
@@ -183,12 +186,18 @@ namespace http_server
                 // At this point, I assume the user password has been confirmed
                 HandleUserLogin::User_ l_user{ loginParams[0], loginParams[1] };
 
-                // We need to make sure that the user does not already exist.
                 // Each new user needs to be unique (No duplicated record)
                 if (const auto isFound = db.searchUserEmail(l_user); !isFound)
                 {
                     // Insert the new user into the database
                     db.insertUser(l_user);
+
+                    // Put the user in the cache
+                    Common::Logging::Logger::log("information", "source", -1, "Cache miss !");
+                    if (!rediscache::RedisCache::set(l_user.email, db.gethashKey(l_user.password)))
+                    {
+                        Common::Logging::Logger::log("warning", "source", -1, "Failed to cache username and password");
+                    }
                 }
                 else
                 {
