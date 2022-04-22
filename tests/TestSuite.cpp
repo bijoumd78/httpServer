@@ -1,11 +1,13 @@
 #include "DatabaseLoggerTest.h"
 #include "FileLoggerTest.h"
+#include "RedisCacheTest.h"
 #include <Poco/Data/PostgreSQL/PostgreSQLException.h>
 #include <Poco/StringTokenizer.h>
 #include <sstream>
 
 namespace test::AIRESTAPI{
     using namespace  Common::Logging;
+    using namespace rediscache;
     using namespace Poco::Data::Keywords;
     using Poco::Data::PostgreSQL::ConnectionException;
 
@@ -109,6 +111,31 @@ TEST_F(FileLoggerTest, searchLOG)
     const auto results = FileLogger::search("TEST_SEARCH_LOG");
 
     EXPECT_EQ(results.size(), 6);
+}
+
+TEST_F(RedisCacheTest, SET_GET)
+{
+    EXPECT_TRUE(1 == 1);
+}
+
+TEST_F(RedisCacheTest, MSET_MGET)
+{
+    EXPECT_TRUE(1 == 1);
+}
+
+TEST_F(RedisCacheTest, DEL)
+{
+    EXPECT_TRUE(1 == 1);
+}
+
+TEST_F(RedisCacheTest, HSET_HGET)
+{
+    EXPECT_TRUE(1 == 1);
+}
+
+TEST_F(RedisCacheTest, HDEL)
+{
+    EXPECT_TRUE(1 == 1);
 }
 
 }// namespace test::AIRESTAPI

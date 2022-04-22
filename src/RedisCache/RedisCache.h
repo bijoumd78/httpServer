@@ -46,6 +46,9 @@ namespace rediscache {
         // DEL key
         static bool delKey(std::string_view key);
 
+        // Delete all caches
+        static bool flushall();
+
     private:
         std::unique_ptr<Common::Logging::Configuration> pConfig_;
         std::string                                     host_{"127.0.0.1"};

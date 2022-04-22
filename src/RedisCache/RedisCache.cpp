@@ -246,4 +246,27 @@ namespace rediscache
         }
         return false;
     }
+
+    bool RedisCache::flushall()
+    {
+        if (!connected_)
+        {
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            return false;
+        }
+
+        Command command("FLUSHALL");
+
+        // A flushall responds with a simple OK string
+        try
+        {
+            std::string result = redis_.execute<std::string>(command);
+            return result.compare("OK") == 0;
+        }
+        catch (const RedisException& e)
+        {
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+        }
+        return false;
+    }
 }
