@@ -18,8 +18,8 @@ namespace Common::Logging {
         //Load config file
         void load(std::string_view path);
 
-        unsigned int             getPort()const;
-        bool                     useSsl()const;
+        std::string              getRedisHost()const;
+        unsigned int             getRedisPort()const;
         std::string              getConsoleLoggingLevel()const;
         std::string              getFilePath()const;
         std::string              getFileRotation()const;
@@ -38,8 +38,8 @@ namespace Common::Logging {
         std::string              getDbLoggingLevel()const;
         std::string              getDbTableName()const;
 
-        void setPort(unsigned int port);
-        void setUseSsl(bool useSsl);
+        void setRedisHost(std::string_view host);
+        void setRedisPort(unsigned int port);
         void setConsoleLoggingLevel(std::string_view consoleLoggingLevel);
         void setFilePath(std::string_view filePath);
         void setFileRotation(std::string_view fileRotation);
@@ -62,8 +62,10 @@ namespace Common::Logging {
         template<typename T>
         void getConfigParams(T& value, const std::string& key, std::function<T(const std::string&)> Fun);
 
-        unsigned int               port_{8100};
-        bool                       useSsl_{false};
+        struct{
+            std::string  host{"127.0.0.1"};
+            unsigned int port{ 8100 };
+        }redis_;
 
         struct {
             std::string loggingLevel{"information"};

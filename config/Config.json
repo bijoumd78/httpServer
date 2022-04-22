@@ -1,6 +1,6 @@
 {
-  "port": 8199,
-  "useSsl": true,
+  "redisHost": "localhost",
+  "redisPort": 6379,
   "channelType": [
     {
       "type": "console",
@@ -18,7 +18,7 @@
       "purgeAge": "12 months",
       "purgeCount": "100"
     },
-	{
+	  {
       "type": "database",
       "loggingLevel": "information",
       "name": "Dev",

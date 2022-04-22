@@ -16,8 +16,8 @@ namespace Common::Logging {
         pConfJson->load(path.data());
 
         // Parse inputs
-        getConfigParams<unsigned int>(port_,   "port",   [this](const std::string& key) { return pConfJson->getUInt(key); });
-        getConfigParams<bool>        (useSsl_, "useSsl", [this](const std::string& key) { return pConfJson->getBool(key); });
+        getConfigParams<std::string>(redis_.host,  "redisHost", [this](const std::string& key) { return pConfJson->getString(key); });
+        getConfigParams<unsigned int>(redis_.port, "redisPort", [this](const std::string& key) { return pConfJson->getUInt(key); });
 
         const auto json = pConfJson->getRawString("channelType");
         Poco::JSON::Parser parser;
@@ -69,14 +69,14 @@ namespace Common::Logging {
         }
     }
 
-    unsigned int Configuration::getPort() const
+    std::string Configuration::getRedisHost() const
     {
-        return port_;
+        return redis_.host;
     }
 
-    bool Configuration::useSsl() const
+    unsigned int Configuration::getRedisPort() const
     {
-        return useSsl_;
+        return redis_.port;
     }
 
     std::string Configuration::getConsoleLoggingLevel() const
@@ -164,14 +164,14 @@ namespace Common::Logging {
         return database_.tableName;
     }
 
-    void Configuration::setPort(unsigned int port)
+    void Configuration::setRedisHost(std::string_view host)
     {
-        port_ = port;
+        redis_.host = host;
     }
 
-    void Configuration::setUseSsl(bool useSsl)
+    void Configuration::setRedisPort(unsigned int port)
     {
-        useSsl_ = useSsl;
+        redis_.port = port;
     }
 
     void Configuration::setConsoleLoggingLevel(std::string_view consoleLoggingLevel)

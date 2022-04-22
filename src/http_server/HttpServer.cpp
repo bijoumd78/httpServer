@@ -1,6 +1,7 @@
 #include "HttpServer.h"
 #include "RequestHandlerFactory.h"
 #include "Logger.h"
+#include "RedisCache.h"
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocketImpl.h>
 #include <Poco/Util/HelpFormatter.h>
@@ -80,6 +81,9 @@ namespace http_server
 
             //Common::Logging::DatabaseLogger pDatabasechannel(configFile_);
             //Common::Logging::Logger::addChannel(&pDatabasechannel);
+
+            // Connect to redis server
+            rediscache::RedisCache rc(configFile_);
 
             Poco::Net::HTTPServerParams::Ptr parameters = new Poco::Net::HTTPServerParams();
             parameters->setTimeout(100000);

@@ -1,4 +1,5 @@
 add_subdirectory(logger)
+add_subdirectory(RedisCache)
 add_subdirectory(http_server)
 add_subdirectory(AI_Image_Processing_Unit)
 add_subdirectory(AI_Image_Processing_Unit2)

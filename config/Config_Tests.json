@@ -1,6 +1,6 @@
 {
-  "port": 8199,
-  "useSsl": true,
+  "redisHost": "localhost",
+  "redisPort": 6379,
   "channelType": [
     {
       "type": "console",
