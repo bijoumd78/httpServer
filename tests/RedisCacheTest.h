@@ -4,7 +4,7 @@
 #include <memory>
 
 namespace test::AIRESTAPI {
-    // The fixture for testing FileLogger class
+    // The fixture for testing RedisCache class
     class RedisCacheTest : public ::testing::Test
     {
     public:
