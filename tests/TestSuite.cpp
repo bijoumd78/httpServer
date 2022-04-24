@@ -152,12 +152,35 @@ TEST_F(RedisCacheTest, DEL)
 
 TEST_F(RedisCacheTest, HSET_HGET)
 {
-    EXPECT_TRUE(1 == 1);
+    RedisCache::hset("Person", "first_name", "Jack");
+    RedisCache::hset("Person", "last_name", "Olseen");
+    RedisCache::hset("Person", "age", "25");
+
+    const auto value1 = RedisCache::hget("Person", "first_name");
+    const auto value2 = RedisCache::hget("Person", "last_name");
+    const auto value3 = RedisCache::hget("Person", "age");
+
+    EXPECT_EQ(value1, "Jack");
+    EXPECT_EQ(value2, "Olseen");
+    EXPECT_EQ(value3, "25");
 }
 
 TEST_F(RedisCacheTest, HDEL)
 {
-    EXPECT_TRUE(1 == 1);
+    RedisCache::hset("Employee", "first_name", "Alice");
+    RedisCache::hset("Employee", "last_name", "Smith");
+    RedisCache::hset("Employee", "age", "30");
+
+    RedisCache::hdel("Employee", "last_name");
+    RedisCache::hdel("Employee", "age");
+
+    const auto value1 = RedisCache::hget("Employee", "first_name");
+    const auto value2 = RedisCache::hget("Employee", "last_name");
+    const auto value3 = RedisCache::hget("Employee", "age");
+
+    EXPECT_EQ(value1, "Alice");
+    EXPECT_EQ(value2, std::nullopt);
+    EXPECT_EQ(value3, std::nullopt);
 }
 
 }// namespace test::AIRESTAPI
