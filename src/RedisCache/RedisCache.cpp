@@ -142,8 +142,14 @@ namespace rediscache
             {
                 BulkString value = result.get<BulkString>(ii);
 
-                if (value.isNull()) { res.emplace_back(""); }
-                res.push_back(value.value());
+                if (value.isNull()) 
+                { 
+                    res.emplace_back(""); 
+                }
+                else
+                {
+                    res.push_back(value.value());
+                }
             }
             return res;
         }

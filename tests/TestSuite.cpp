@@ -115,17 +115,39 @@ TEST_F(FileLoggerTest, searchLOG)
 
 TEST_F(RedisCacheTest, SET_GET)
 {
-    EXPECT_TRUE(1 == 1);
+    RedisCache::set("key1", "value1");
+    RedisCache::set("key2", "value2");
+    const auto result1 = RedisCache::get("key1");
+    const auto result2 = RedisCache::get("key2");
+    const auto result3 = RedisCache::get("key3");
+
+    EXPECT_EQ(result1.value(), "value1" );
+    EXPECT_EQ(result2.value(), "value2" );
+    EXPECT_EQ(result3, std::nullopt );
 }
 
 TEST_F(RedisCacheTest, MSET_MGET)
 {
-    EXPECT_TRUE(1 == 1);
+    std::initializer_list<std::string> keys_values{ "key11", "value11", "key22", "value22", "key33", "value33" };
+    RedisCache::mset(keys_values);
+
+    std::initializer_list<std::string> keys{ "key11", "key22", "key33", "key44" };
+    const auto results = RedisCache::mget(keys);
+
+    EXPECT_EQ(results.value().size(), 4);
+    EXPECT_EQ(results.value().at(0), "value11");
+    EXPECT_EQ(results.value().at(1), "value22");
+    EXPECT_EQ(results.value().at(2), "value33");
+    EXPECT_EQ(results.value().at(3), "");
 }
 
 TEST_F(RedisCacheTest, DEL)
 {
-    EXPECT_TRUE(1 == 1);
+    RedisCache::set("key55", "value55");
+    RedisCache::delKey("key55");
+    const auto result = RedisCache::get("key55");
+
+    EXPECT_EQ(result, std::nullopt);
 }
 
 TEST_F(RedisCacheTest, HSET_HGET)

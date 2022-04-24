@@ -7,11 +7,14 @@ namespace test::AIRESTAPI {
     // The fixture for testing FileLogger class
     class RedisCacheTest : public ::testing::Test
     {
+    public:
+        // Connect to Redis server
+        std::string configFile_{ "Config_Tests.json" };
+        std::unique_ptr<rediscache::RedisCache> Redis;
+
     protected:
         void SetUp() override {
-           // Connect to Redis server
-            std::string configFile_{ "Config_Tests.json" };
-            rediscache::RedisCache Redis(configFile_);
+            Redis = std::make_unique<rediscache::RedisCache>(configFile_);
         }
 
         void TearDown() override {
