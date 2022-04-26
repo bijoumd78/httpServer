@@ -17,6 +17,10 @@ namespace rediscache {
         // Set a key to a value
         //SET key value
         static bool set(std::string_view key, std::string_view value);
+
+        // Set a key to a value with an expiration time in second
+        // SETEX key value EX time(seconds)
+        static bool setex(std::string_view key, std::string_view value, unsigned sec);
         
         // Set multiple [key - value] in one command
         // MSET key1 "value1" key2 "value2" key3 "value3"
@@ -48,6 +52,12 @@ namespace rediscache {
 
         // Delete all caches
         static bool flushall();
+
+        // Publish (Sample code, see implementation)
+        static void publish(std::string_view topic, std::string_view message);
+
+        // Subscribe (Sample code, see implementation)
+        static void subscribe(std::string_view topic);
 
     private:
         std::unique_ptr<Common::Logging::Configuration> pConfig_;

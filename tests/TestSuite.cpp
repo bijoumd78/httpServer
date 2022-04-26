@@ -126,6 +126,18 @@ TEST_F(RedisCacheTest, SET_GET)
     EXPECT_EQ(result3, std::nullopt );
 }
 
+TEST_F(RedisCacheTest, SETEX_GET)
+{
+    RedisCache::setex("key3", "value3", 10);
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    const auto result1 = RedisCache::get("key3");
+    EXPECT_EQ(result1, std::nullopt);
+
+    RedisCache::setex("key4", "value4", 60);
+    const auto result2 = RedisCache::get("key4");
+    EXPECT_EQ(result2.value(), "value4");
+}
+
 TEST_F(RedisCacheTest, MSET_MGET)
 {
     std::initializer_list<std::string> keys_values{ "key11", "value11", "key22", "value22", "key33", "value33" };

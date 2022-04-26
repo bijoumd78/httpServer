@@ -1,5 +1,8 @@
 #include "RedisCache.h"
-#include "Poco/Redis/Command.h"
+#include <Poco/Redis/Command.h>
+#include <Poco/Redis/AsyncReader.h>
+#include <Poco/Delegate.h>
+#include <thread>
 
 namespace rediscache
 {
@@ -60,6 +63,32 @@ namespace rediscache
         try
         {
             std::string result = redis_.execute<std::string>(set);
+            return result.compare("OK") == 0;
+        }
+        catch (const RedisException& e)
+        {
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+        }
+        return false;
+    }
+
+    bool RedisCache::setex(std::string_view key, std::string_view value, unsigned sec)
+    {
+        if (!connected_)
+        {
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            return false;
+        }
+
+        Array command;
+        command.add("SET").add(key.data()).add(value.data());
+        command.add("EX");
+        command.add(std::to_string(sec));
+
+        // A set responds with a simple OK string
+        try
+        {
+            auto result = redis_.execute<std::string>(command);
             return result.compare("OK") == 0;
         }
         catch (const RedisException& e)
@@ -274,5 +303,142 @@ namespace rediscache
             Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
         }
         return false;
+    }
+
+    void RedisCache::publish(std::string_view topic, std::string_view message)
+    {
+        if (!connected_)
+        {
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            return;
+        }
+
+        Array publish;
+
+        for (int ii{}; ii < 10; ++ii)
+        {
+            std::stringstream ss;
+            ss << message.data() << " " << ii;
+            publish.add("PUBLISH").add(topic.data());
+            publish.add(ss.str()); // Do not chain this argument
+
+            try {
+                redis_.execute<void>(publish);
+                redis_.flush();
+            }
+            catch (const RedisException& e)
+            {
+                Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            }
+            catch (const Poco::BadCastException& e)
+            {
+                Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            }
+
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            publish.clear();
+        }
+        publish.clear();
+        publish.add("PUBLISH").add(topic.data());
+        publish.add("break");
+        redis_.execute<void>(publish);
+        redis_.flush();
+    }
+
+    // Sample implementation of Redis PUB/SUB
+    class RedisSubscriber
+    {
+    public:
+        void onMessage(const void* pSender, RedisEventArgs& args)
+        {
+            if (!args.message().isNull())
+            {
+                auto arrayType = dynamic_cast<Type<Array>*>(args.message().get());
+                if (arrayType != nullptr)
+                {
+                    if (const Array& array = arrayType->value(); array.size() == 3)
+                    {
+                        if (BulkString type = array.get<BulkString>(0); type.value().compare("unsubscribe") == 0)
+                        {
+                            Poco::Int64 n = array.get<Poco::Int64>(2);
+                            // When 0, no subscribers anymore, so stop reading ...
+                            if (n == 0) args.stop();
+                        }
+                        // Get message
+                        if (array.getType(2) != RedisType::Types::REDIS_INTEGER)
+                        {
+                            message_ = array.get<BulkString>(2).value();
+                        }
+                    }
+                    else
+                    {
+                        // Wrong array received. Stop the reader
+                        args.stop();
+                    }
+                }
+                else
+                {
+                    // Invalid type of message received. Stop the reader ...
+                    args.stop();
+                }
+            }
+        }
+
+        void onError(const void* pSender, RedisEventArgs& args)
+        {
+            // No need to call stop, AsyncReader stops automatically when an
+            // exception is received.
+            Common::Logging::Logger::log("error", "RedisCache", -1, args.exception()->className());
+        }
+
+        static std::string getMassage()
+        {
+            return message_;
+        }
+
+    private:
+        static std::string message_;
+    };
+
+    // Static data member
+    std::string RedisSubscriber::message_{};
+
+
+    void RedisCache::subscribe(std::string_view topic)
+    {
+        if (!connected_)
+        {
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            return;
+        }
+
+        Array subscribe;
+        subscribe.add("SUBSCRIBE").add(topic.data());
+
+        redis_.execute<void>(subscribe);
+        redis_.flush();
+
+        RedisSubscriber subscriber;
+        std::string stop{};
+        for (;;)
+        {
+            AsyncReader reader(redis_);
+            reader.redisResponse += Poco::delegate(&subscriber, &RedisSubscriber::onMessage);
+            reader.redisException += Poco::delegate(&subscriber, &RedisSubscriber::onError);
+            reader.start();
+
+            stop = RedisSubscriber::getMassage();
+            // Received message
+            Common::Logging::Logger::log("information", "RedisCache", -1, stop);
+
+            if (Poco::icompare(stop, "break") == 0)
+            {
+                Array unsubscribe;
+                unsubscribe.add("UNSUBSCRIBE");
+                redis_.execute<void>(unsubscribe);
+                redis_.flush();
+                break;
+            }
+        }
     }
 }
