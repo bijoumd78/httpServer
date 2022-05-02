@@ -33,7 +33,7 @@ struct ResNetBlock : torch::nn::Module
 {
   torch::nn::Sequential conv_block;
 
-  ResNetBlock(int64_t dim);
+  explicit ResNetBlock(int64_t dim);
 
   Tensor forward(const Tensor &inp);
 };
