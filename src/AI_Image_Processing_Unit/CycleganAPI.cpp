@@ -65,7 +65,7 @@ namespace AI::ImageProcessingUnit
 
         for (int64_t i = 0; i < n_downsampling; i++)
         {
-            int64_t mult = 1 << (n_downsampling - i);
+            mult = 1 << (n_downsampling - i);
             model->push_back(ConvTranspose2d(ngf * mult, ngf * mult / 2, /*kernel_size=*/3,/*stride=*/2, /*padding=*/1, /*output_padding=*/1));
             model->push_back(torch::nn::InstanceNorm2d(torch::nn::InstanceNorm2dOptions((ngf * mult / 2))));
             model->push_back(torch::nn::ReLU(/*inplace=*/true));

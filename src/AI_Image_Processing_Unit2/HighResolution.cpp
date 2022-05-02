@@ -2,13 +2,14 @@
 #include <Logger.h>
 #include <filesystem>
 
-#define Mahamadou 0
+#define Debugging 0
 
 namespace AI::ImageProcessingUnit2
 {
     using namespace InferenceEngine;
 
-    HighResNet::HighResNet(const Core& ie, const std::string& deviceName, const std::string& xmlModel, const std::string& inputImagePath, const std::string& outputImagePath) :
+    HighResNet::HighResNet(const Core& ie, const std::string& deviceName, const std::string& xmlModel, 
+        const std::string& inputImagePath, const std::string& outputImagePath) :
         ie_{ ie },
         inputImagePath_{ inputImagePath },
         outputImagePath_{ outputImagePath }
@@ -83,7 +84,7 @@ namespace AI::ImageProcessingUnit2
         ycc_Planes[1].copyTo(Cb_);
         ycc_Planes[2].copyTo(Cr_);
 
-#if Mahamadou
+#if Debugging
         // Show image
         cv::namedWindow("Original input image", cv::WINDOW_AUTOSIZE);
         cv::namedWindow("Grey input image", cv::WINDOW_AUTOSIZE);
@@ -191,7 +192,7 @@ namespace AI::ImageProcessingUnit2
         cv::Mat BGRImage;
         cv::cvtColor(YCbCrImage, BGRImage, cv::COLOR_YCrCb2BGR);
 
-#if Mahamadou
+#if Debugging
         // Show image
         cv::namedWindow("Output image", cv::WINDOW_AUTOSIZE);
         cv::imshow("Output image", out_grey);
@@ -202,16 +203,11 @@ namespace AI::ImageProcessingUnit2
         cv::waitKey();
         cv::destroyAllWindows();
 #endif
-        //const auto& filename = std::filesystem::path(inputImagePath_).filename().u8string();
-        //const auto& parent_path = std::filesystem::path(inputImagePath_).parent_path();
-        //std::stringstream ss;
-        //ss << parent_path.u8string() + "/out_horse.jpg";
-        if (!cv::imwrite(/*ss.str()*/ outputImagePath_, BGRImage))
+        if (!cv::imwrite(outputImagePath_, BGRImage))
         {
-            Common::Logging::Logger::log("error", "HighRes", -1, "Failed to save final image: " + /*ss.str()*/ outputImagePath_);
+            Common::Logging::Logger::log("error", "HighRes", -1, "Failed to save final image: " + outputImagePath_);
         }
     }
-
 
     void RunHighResNet::processImage(const void* pSender, InputArgList& args)
     {
