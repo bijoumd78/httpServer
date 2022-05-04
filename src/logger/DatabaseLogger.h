@@ -11,10 +11,9 @@ namespace Common::Logging {
     using multipleRows_t = std::vector<tableData_t>;
 
     struct Row {
-        Row()
-        {
-            transactionId_ = -1;
-        }
+        Row():
+            transactionId_{ -1 }
+        {}
 
         Row(const std::string& timestamp, const std::string& level,
             const std::string& source, int transactionId, const std::string& message) :
@@ -34,7 +33,7 @@ namespace Common::Logging {
                 message_ == other.message_;
         }
 
-        bool operator<(const Row& other)
+        bool operator<(const Row& other)const
         {
             if (timestamp_ < other.timestamp_)
                 return true;
@@ -46,6 +45,7 @@ namespace Common::Logging {
                 return true;
             if (message_ < other.message_)
                 return true;
+            return false;
         }
 
         std::string timestamp_;
