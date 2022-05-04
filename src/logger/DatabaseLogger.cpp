@@ -133,7 +133,7 @@ namespace Common::Logging {
         std::stringstream ss;
         ss << "SELECT * FROM " + tableName_ + " WHERE to_tsvector(" + tableName_ + "::text) @@ to_tsquery('" << pattern << "')";
         try { *pSession_ << ss.str(), into(timestamps), into(levels), into(sources), into(transactionIds), into(messages), now; }
-        catch (ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
+        catch (const ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
 
         std::vector<std::string> result;
         if (!timestamps.empty() && !levels.empty() && !sources.empty() && !transactionIds.empty() && !messages.empty())
@@ -234,7 +234,7 @@ namespace Common::Logging {
         std::stringstream ss;
         ss << "SELECT * FROM " + tableName_ + " WHERE to_tsvector(" + tableName_ + "::text) @@ to_tsquery('" << token << "')";
         try { *pSession_ << ss.str(), into(timestamps), into(levels), into(sources), into(transactionIds), into(messages), now; }
-        catch (ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
+        catch (const ConnectionException& ce) { std::cout << ce.displayText() << std::endl; }
 
         Row row;
         if (!timestamps.empty() && !levels.empty() && !sources.empty() && !transactionIds.empty() && !messages.empty())
@@ -264,11 +264,11 @@ namespace Common::Logging {
         messages.reserve(SIZE);
 
         std::for_each(rows.begin(), rows.end(), [&](tableData_t& e) {
-            timestamps.push_back(e[0].data());
-            levels.push_back(e[1].data());
-            sources.push_back(e[2].data());
+            timestamps.emplace_back(e[0].data());
+            levels.emplace_back(e[1].data());
+            sources.emplace_back(e[2].data());
             transactionIds.push_back(std::stoi(e[3].data()));
-            messages.push_back(e[4].data());
+            messages.emplace_back(e[4].data());
             });
 
         Poco::Data::Statement stmt(*pSession_);
