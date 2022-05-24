@@ -1,7 +1,6 @@
 #pragma once
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/WebSocket.h>
-#include <vector>
 #include <memory>
 
 using Poco::Net::WebSocket;
