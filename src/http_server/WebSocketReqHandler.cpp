@@ -110,7 +110,7 @@ namespace http_server
                 tmp.resize(n);
                 std::copy(buf.begin(), buf.end(), begin(tmp));
 
-                //TODO: send massage to all connected parties
+                //TODO: send message to all connected parties
                 pWS_->sendFrame(tmp.c_str(), n);
             }
         }
