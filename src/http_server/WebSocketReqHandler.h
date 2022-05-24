@@ -11,11 +11,14 @@ namespace http_server
     class WebSocketReqHandler : public Poco::Net::HTTPRequestHandler
     {
     public:
-        ~WebSocketReqHandler();
+        ~WebSocketReqHandler()override;
 
         void handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)override;
         void send(const std::string& buffer);
         void shutdown();
+
+        void handleSearch();
+        void handleChat();
 
     private:
         std::unique_ptr<WebSocket> pWS_;
