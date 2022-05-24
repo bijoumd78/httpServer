@@ -4,8 +4,7 @@ Build command for the "release" version
 	-DCMAKE_PREFIX_PATH="D:\Pytorch\libtorch-win-shared-with-deps-1.10.2+cpu\libtorch;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\inference_engine;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\opencv" 
 	-DCMAKE_BUILD_TYPE=Release ..
 
-2- cmake --build . --config=Release --verbose 
-
+2- cmake --build . --parallel -j 12 --config=Release --verbose 
 
 
 Build command for the "Debug" version (Not working correctly)
@@ -13,7 +12,7 @@ Build command for the "Debug" version (Not working correctly)
 	-DCMAKE_PREFIX_PATH="D:\Pytorch\libtorch-win-shared-with-deps-debug-1.10.2+cpu\libtorch;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\inference_engine;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\opencv" 
 	-DCMAKE_BUILD_TYPE=Debug ..
 
-2- cmake --build . --config=Debug --verbose 
+2- cmake --build . --parallel -j 12 --config=Debug --verbose 
 
 
 Convert pytorch model to ONNX representation OpenVINO IR (Intermediate Representation)
