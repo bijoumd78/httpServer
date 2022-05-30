@@ -1,9 +1,11 @@
 #include "DatabaseLoggerTest.h"
 #include "FileLoggerTest.h"
 #include "RedisCacheTest.h"
+#include "RedisPubSubTest.h"
 #include <Poco/Data/PostgreSQL/PostgreSQLException.h>
 #include <Poco/StringTokenizer.h>
 #include <sstream>
+#include <thread>
 
 namespace test::AIRESTAPI{
     using namespace  Common::Logging;
@@ -193,6 +195,19 @@ TEST_F(RedisCacheTest, HDEL)
     EXPECT_EQ(value1, "Alice");
     EXPECT_EQ(value2, std::nullopt);
     EXPECT_EQ(value3, std::nullopt);
+}
+
+TEST_F(RedisPubSubTest, PUBSUB)
+{
+    std::thread Tpub(&redispublish::RedisPublish::publish, RedisPub, std::string_view{ "test" }, std::string_view{ "hello world" });
+    RedisSub->subscribe("test");
+    Tpub.join();
+
+    const auto tmp = RedisSub->getMessages();
+
+    EXPECT_EQ(tmp.size(), 2);
+    EXPECT_EQ(tmp[0], "hello world");
+    EXPECT_EQ(tmp[1], "break");
 }
 
 }// namespace test::AIRESTAPI

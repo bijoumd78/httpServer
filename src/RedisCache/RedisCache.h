@@ -53,12 +53,6 @@ namespace rediscache {
         // Delete all caches
         static bool flushall();
 
-        // Publish (Sample code, see implementation)
-        static void publish(std::string_view topic, std::string_view message);
-
-        // Subscribe (Sample code, see implementation)
-        static void subscribe(std::string_view topic);
-
     private:
         std::unique_ptr<Common::Logging::Configuration> pConfig_;
         std::string                                     host_{"127.0.0.1"};
