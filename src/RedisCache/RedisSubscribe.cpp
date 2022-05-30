@@ -10,6 +10,7 @@ namespace redissubscribe
 
     bool RedisSubscribe::connected_ = false;
     Poco::Redis::Client RedisSubscribe::redis_;
+    std::vector<std::string> RedisSubscribe::receivedMessages_;
 
     RedisSubscribe::RedisSubscribe(std::string_view configFile) :
         pConfig_{ std::make_unique<Common::Logging::Configuration>(configFile) }
@@ -156,7 +157,7 @@ namespace redissubscribe
         }
     }
 
-    std::vector<std::string> RedisSubscribe::getMessages()const
+    std::vector<std::string> RedisSubscribe::getMessages()
     {
         return receivedMessages_;
     }

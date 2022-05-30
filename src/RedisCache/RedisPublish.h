@@ -11,11 +11,11 @@ namespace redispublish
         explicit RedisPublish(std::string_view configFile);
         ~RedisPublish();
 
-        void publish(std::string_view topic, std::string_view message)const;
+        static void publish(std::string_view topic, std::string_view message);
 
     private:
         // Helper function
-        void executeCommand(const Poco::Redis::Array& com)const;
+        static void executeCommand(const Poco::Redis::Array& com);
 
         std::unique_ptr<Common::Logging::Configuration> pConfig_;
         std::string                                     host_{ "localhost" };

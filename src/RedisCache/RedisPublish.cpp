@@ -48,7 +48,7 @@ namespace redispublish
         }
     }
 
-    void RedisPublish::executeCommand(const Poco::Redis::Array & com) const
+    void RedisPublish::executeCommand(const Poco::Redis::Array & com)
     {
         try {
             redis_.execute<void>(com);
@@ -64,7 +64,7 @@ namespace redispublish
         }
     }
 
-    void RedisPublish::publish(std::string_view topic, std::string_view message)const
+    void RedisPublish::publish(std::string_view topic, std::string_view message)
     {
         if (!connected_)
         {

@@ -10,8 +10,8 @@ namespace redissubscribe
         explicit RedisSubscribe(std::string_view configFile);
         ~RedisSubscribe();
 
-        void subscribe(std::string_view topic);
-        std::vector<std::string> getMessages()const;
+        static void subscribe(std::string_view topic);
+        static std::vector<std::string> getMessages();
 
     private:
         std::unique_ptr<Common::Logging::Configuration> pConfig_;
@@ -19,7 +19,7 @@ namespace redissubscribe
         unsigned                                        port_{ 6379 };
         static bool                                     connected_;
         static Poco::Redis::Client                      redis_;
-        std::vector<std::string>                        receivedMessages_;
+        static std::vector<std::string>                 receivedMessages_;
 
     };
 }

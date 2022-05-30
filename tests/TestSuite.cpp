@@ -199,11 +199,11 @@ TEST_F(RedisCacheTest, HDEL)
 
 TEST_F(RedisPubSubTest, PUBSUB)
 {
-    std::thread Tpub(&redispublish::RedisPublish::publish, RedisPub, std::string_view{ "test" }, std::string_view{ "hello world" });
-    RedisSub->subscribe("test");
+    std::thread Tpub(&redispublish::RedisPublish::publish, std::string_view{ "test" }, std::string_view{ "hello world" });
+    redissubscribe::RedisSubscribe::subscribe("test");
     Tpub.join();
 
-    const auto tmp = RedisSub->getMessages();
+    const auto tmp = redissubscribe::RedisSubscribe::getMessages();
 
     EXPECT_EQ(tmp.size(), 2);
     EXPECT_EQ(tmp[0], "hello world");

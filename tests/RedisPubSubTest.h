@@ -1,6 +1,7 @@
 #pragma once
 #include "RedisPublish.h"
 #include "RedisSubscribe.h"
+#include "RedisCache.h"
 #include <gtest/gtest.h>
 #include <memory>
 
@@ -10,19 +11,18 @@ namespace test::AIRESTAPI {
     public:
         // Connect to Redis server
         std::string configFile_{ "Config_Tests.json" };
-        redispublish::RedisPublish* RedisPub;
-        redissubscribe::RedisSubscribe* RedisSub;
+        std::unique_ptr<redispublish::RedisPublish> RedisPub;
+        std::unique_ptr<redissubscribe::RedisSubscribe> RedisSub;
 
     protected:
         void SetUp() override {
-            RedisPub = new redispublish::RedisPublish(configFile_);
-            RedisSub = new redissubscribe::RedisSubscribe(configFile_);
+            RedisPub = std::make_unique<redispublish::RedisPublish>(configFile_);
+            RedisSub = std::make_unique<redissubscribe::RedisSubscribe>(configFile_);
         }
 
         void TearDown() override {
             // Delete all caches
-            delete RedisPub;
-            delete RedisSub;
+            rediscache::RedisCache::flushall();
         }
     };
 }
