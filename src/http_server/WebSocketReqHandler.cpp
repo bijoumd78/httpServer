@@ -1,5 +1,7 @@
 #include "WebSocketReqHandler.h"
 #include "Logger.h"
+#include "RedisPublish.h"
+#include "RedisSubscribe.h"
 
 #include <Poco/Net/NetException.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -99,18 +101,19 @@ namespace http_server
     void WebSocketReqHandler::handleChat()
     {
         Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection established.");   
-        auto n{ 1 };
-        while (n > 0 || (flags_ & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE)
+
+        while ((flags_ & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE)
         {
             Poco::Buffer<char> buf(0);
-            n = pWS_->receiveFrame(buf, flags_);
+            auto n = pWS_->receiveFrame(buf, flags_);
             if (!buf.empty())
             {
                 std::string tmp;
                 tmp.resize(n);
                 std::copy(buf.begin(), buf.end(), begin(tmp));
 
-                //TODO: send message to all connected parties
+                // TODO: send message to all connected parties using 
+                // Redis PUB/SUB
                 pWS_->sendFrame(tmp.c_str(), n);
             }
         }

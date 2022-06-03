@@ -2,6 +2,8 @@
 #include "RequestHandlerFactory.h"
 #include "Logger.h"
 #include "RedisCache.h"
+#include "RedisPublish.h"
+#include "RedisSubscribe.h"
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocketImpl.h>
 #include <Poco/Util/HelpFormatter.h>
@@ -84,6 +86,11 @@ namespace http_server
 
             // Connect to redis server
             rediscache::RedisCache rc(configFile_);
+
+            // Connect to redis PUB/SUB server
+            redispublish::RedisPublish pub(configFile_);
+            redissubscribe::RedisSubscribe sub(configFile_);
+
 
             Poco::Net::HTTPServerParams::Ptr parameters = new Poco::Net::HTTPServerParams();
             parameters->setTimeout(100000);

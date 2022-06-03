@@ -55,7 +55,7 @@ namespace rediscache {
 
     private:
         std::unique_ptr<Common::Logging::Configuration> pConfig_;
-        std::string                                     host_{"127.0.0.1"};
+        std::string                                     host_{"localhost"};
         unsigned                                        port_{ 6379 };
         static bool                                     connected_;
         static Poco::Redis::Client                      redis_;
