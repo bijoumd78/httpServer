@@ -1,7 +1,6 @@
 #include "RedisPublish.h"
 #include <Logger.h>
 #include <chrono>
-#include <thread>
 
 namespace redispublish
 {
@@ -73,21 +72,9 @@ namespace redispublish
         }
 
         Array publish;
-
-        // TODO: The first message gets dropped for some unknown reason
-        // Need to be investigated further. Hence, we send the message twice
-        for (int ii{}; ii < 2; ++ii)
-        {
-            publish.add("PUBLISH").add(topic.data());
-            publish.add(message.data());
-            executeCommand(publish);
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            publish.clear();
-        }
-        publish.clear();
         publish.add("PUBLISH").add(topic.data());
-        publish.add("break");
+        publish.add(message.data());
         executeCommand(publish);
+        publish.clear();
     }
 }

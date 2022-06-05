@@ -10,10 +10,10 @@ namespace redissubscribe
 
     bool RedisSubscribe::connected_ = false;
     Poco::Redis::Client RedisSubscribe::redis_;
-    std::vector<std::string> RedisSubscribe::receivedMessages_;
 
-    RedisSubscribe::RedisSubscribe(std::string_view configFile) :
-        pConfig_{ std::make_unique<Common::Logging::Configuration>(configFile) }
+    RedisSubscribe::RedisSubscribe(std::string_view configFile, std::string_view topic) :
+        pConfig_{ std::make_unique<Common::Logging::Configuration>(configFile) },
+        topic_{topic}
     {
         host_ = pConfig_->getRedisHost();
         port_ = pConfig_->getRedisPort();
@@ -133,19 +133,11 @@ namespace redissubscribe
             reader.start();
 
             stop = RedisSubscriber::getMessage();
-            
-            if (Poco::icompare(stop, "") != 0)
-            {
-                receivedMessages_.push_back(stop);
-                // Remove duplicate message
-                // TODO: The first message gets dropped for some unknown reason
-                // Need to be investigated further. Hence, we send the message twice, so they might be duplicate message
-                if(auto last = std::unique(receivedMessages_.begin(), receivedMessages_.end()); last != receivedMessages_.end())
-                {
-                    receivedMessages_.erase(last, receivedMessages_.end());
-                }
-            }
 
+            // Published message
+            std::cout << stop << std::endl;
+
+            // This section of the code is useful only for testing purposes
             if (Poco::icompare(stop, "break") == 0)
             {
                 Array unsubscribe;
@@ -153,12 +145,12 @@ namespace redissubscribe
                 redis_.execute<void>(unsubscribe);
                 redis_.flush();
                 break;
-            } 
+            }
         }
     }
 
-    std::vector<std::string> RedisSubscribe::getMessages()
+    void RedisSubscribe::run()
     {
-        return receivedMessages_;
+        subscribe( topic_);
     }
 }

@@ -1,7 +1,6 @@
 #include "WebSocketReqHandler.h"
 #include "Logger.h"
 #include "RedisPublish.h"
-#include "RedisSubscribe.h"
 
 #include <Poco/Net/NetException.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -114,7 +113,8 @@ namespace http_server
 
                 // TODO: send message to all connected parties using 
                 // Redis PUB/SUB
-                pWS_->sendFrame(tmp.c_str(), n);
+                redispublish::RedisPublish::publish("test", tmp);
+                //pWS_->sendFrame(tmp.c_str(), n);
             }
         }
         Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection closed.");
