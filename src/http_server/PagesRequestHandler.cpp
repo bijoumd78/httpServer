@@ -367,6 +367,7 @@ namespace http_server
             "<ul>\n"
             "<li class = \"active\"><a href = \"index.html\">Menu</a></li>\n"
             "<li><a href = \"webSocketChat.html\">WebSocketChat</a></li>\n"
+            "<li><a href=\"chat.html\">Chat</a></li>"
             "<li><a href = \"ai.html\">AI Image Processing</a></li>\n"
             "<li><a href = \"events.html\">Events</a></li>\n"
             "<li><a href = \"contact.html\">Contact</a></li>\n"
