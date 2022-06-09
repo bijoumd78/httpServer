@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Home</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 
 <br>
@@ -43,7 +44,8 @@
     <br></br>
     Your Name: <input class="draw-border" id="userName" size=47 style="margin-bottom: 5px;"><br>
 
-    <pre id="messages" style="width: 600px; height: 400px; border: solid 1px #cccccc; margin-bottom: 5px;"></pre>
+    <pre id="messages" style="width: 600px; height: 400px; max-height: 400px; overflow: auto;
+     white-space: pre-wrap; word-wrap: break-word; border: solid 1px #cccccc; margin-bottom: 5px;"></pre>
 
     <div style="margin-bottom: 5px;">
       Message<br>
@@ -53,21 +55,30 @@
   </div>
 
   <script>
+    function scrollPre(){ 
+      var pre = jQuery("#messages"); 
+      pre.scrollTop( pre.prop("scrollHeight") );
+    }
+
     var ws = null;
 
     connect.onclick = function () {
       ws = new WebSocket("ws://localhost:5849/chat");
       ws.onopen = function (ev) {
         messages.innerText += "[connection opened]\n";
+        scrollPre();
       };
       ws.onclose = function (ev) {
         messages.innerText += "[connection closed]\n";
+        scrollPre();
       };
       ws.onmessage = function (ev) {
         messages.innerText += ev.data + "\n";
+        scrollPre();
       };
       ws.onerror = function (ev) {
         messages.innerText += "[error]\n";
+        scrollPre();
         console.log(ev);
       };
     };
