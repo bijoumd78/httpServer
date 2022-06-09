@@ -1,16 +1,21 @@
 # httpServer
+
 Build command for the "release" version
-1- cmake -G 'Visual Studio 15 2017 Win64' -DCMAKE_TOOLCHAIN_FILE=C:/temp/vcpkg/scripts/buildsystems/vcpkg.cmake 
-	-DCMAKE_PREFIX_PATH="D:\Pytorch\libtorch-win-shared-with-deps-1.10.2+cpu\libtorch;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\inference_engine;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\opencv" 
-	-DCMAKE_BUILD_TYPE=Release ..
+
+1- cmake -G 'Visual Studio 15 2017 Win64'  
+-DCMAKE_TOOLCHAIN_FILE=C:/temp/vcpkg/scripts/buildsystems/vcpkg.cmake 
+-DCMAKE_PREFIX_PATH="D:\Pytorch\libtorch-win-shared-with-deps-1.10.2+cpu\libtorch; C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\inference_engine; C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\opencv" 
+-DCMAKE_BUILD_TYPE=Release ..
 
 2- cmake --build . --parallel -j 12 --config=Release --verbose 
 
 
-Build command for the "Debug" version (Not working correctly)
-1- cmake -G 'Visual Studio 15 2017 Win64' -DCMAKE_TOOLCHAIN_FILE=C:/temp/vcpkg/scripts/buildsystems/vcpkg.cmake 
-	-DCMAKE_PREFIX_PATH="D:\Pytorch\libtorch-win-shared-with-deps-debug-1.10.2+cpu\libtorch;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\inference_engine;C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\opencv" 
-	-DCMAKE_BUILD_TYPE=Debug ..
+Build command for the "Debug" version
+
+1- cmake -G 'Visual Studio 15 2017 Win64'  
+-DCMAKE_TOOLCHAIN_FILE=C:/temp/vcpkg/scripts/buildsystems/vcpkg.cmake 
+-DCMAKE_PREFIX_PATH="D:\Pytorch\libtorch-win-shared-with-deps-debug-1.10.2+cpu\libtorch; C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\inference_engine; C:\Users\bijou\Desktop\PocoServer\PocoServer\src\AI_Image_Processing_Unit2\deployment_tools\opencv" 
+-DCMAKE_BUILD_TYPE=Debug ..
 
 2- cmake --build . --parallel -j 12 --config=Debug --verbose 
 
