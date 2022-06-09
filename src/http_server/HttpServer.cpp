@@ -2,8 +2,6 @@
 #include "RequestHandlerFactory.h"
 #include "Logger.h"
 #include "RedisCache.h"
-#include "RedisPublish.h"
-#include "RedisSubscribe.h"
 #include <Poco/Net/HTTPServer.h>
 #include <Poco/Net/ServerSocketImpl.h>
 #include <Poco/Util/HelpFormatter.h>
@@ -86,11 +84,6 @@ namespace http_server
 
             // Connect to redis server
             rediscache::RedisCache rc(configFile_);
-
-            // Connect to redis PUB/SUB server
-            redispublish::RedisPublish pub(configFile_);
-            redissubscribe::RedisSubscribe sub( configFile_, "test");
-
             Poco::Net::HTTPServerParams::Ptr parameters = new Poco::Net::HTTPServerParams();
             parameters->setTimeout(100000);
             parameters->setMaxQueued(100);
@@ -102,16 +95,9 @@ namespace http_server
             Common::Logging::Logger::log("information", "source", -1, "Poco Restful Web Service started and running.");
             Common::Logging::Logger::log("information", "source", -1, "Type http://localhost:" + port_ + " to use it or type CRLT+C to finish it.");
 
-            //Start a background thread running Redis SUB.
-            Poco::Thread redisSUBThread;
-            Poco::SharedPtr<redissubscribe::RedisSubscribe> RedisSub( new redissubscribe::RedisSubscribe(configFile_, "test") );
-            redisSUBThread.start(RedisSub);
-
             // Start sever thread
             server.start();
             waitForTerminationRequest();
-
-            redisSUBThread.join();
             server.stopAll();
         }
         return Poco::Util::Application::EXIT_OK;

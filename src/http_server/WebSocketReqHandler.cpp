@@ -1,6 +1,5 @@
 #include "WebSocketReqHandler.h"
 #include "Logger.h"
-#include "RedisPublish.h"
 
 #include <Poco/Net/NetException.h>
 #include <Poco/Net/HTTPServerResponse.h>
@@ -19,6 +18,9 @@ using Poco::Timespan;
 
 namespace http_server
 {
+    std::vector<WebSocketReqHandler *> WebSocketReqHandler::connectedSockets_;
+    Poco::FastMutex                    WebSocketReqHandler::mtx_;
+
     WebSocketReqHandler::~WebSocketReqHandler()
     {
         shutdown();
@@ -36,6 +38,9 @@ namespace http_server
                 Timespan ts(600, 0);
                 pWS_->setReceiveTimeout(ts);
                 pWS_->setSendTimeout(ts);
+
+                Poco::FastMutex::ScopedLock lock(mtx_);
+                connectedSockets_.push_back(this);
             }
 
             Poco::Path path(req.getURI());
@@ -111,18 +116,32 @@ namespace http_server
                 tmp.resize(n);
                 std::copy(buf.begin(), buf.end(), begin(tmp));
 
-                // TODO: send message to all connected parties using 
-                // Redis PUB/SUB
-                redispublish::RedisPublish::publish("test", tmp);
-                //pWS_->sendFrame(tmp.c_str(), n);
+                // Sent message to all connected parties
+                if (!connectedSockets_.empty())
+                {
+                    for (const auto& e : connectedSockets_)
+                    {
+                        e->send(tmp);
+                    }
+
+                }
             }
         }
-        Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection closed.");
+
+        for (auto it = connectedSockets_.begin(); it != connectedSockets_.end(); ++it)
+        {
+            if (*it == this)
+            {
+                Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection closed");
+                Poco::FastMutex::ScopedLock lock(mtx_);
+                connectedSockets_.erase(it);
+                break;
+            }
+        }
     }
 
     void WebSocketReqHandler::send(const std::string& buffer)
     {
-        Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Sending data: " + buffer);
         pWS_->sendFrame(buffer.data(), static_cast<int>(buffer.size()), flags_);
     }
 
