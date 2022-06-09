@@ -1,4 +1,4 @@
-# httpServer
+# HttpServer
 
 Build command for the "release" version
 
