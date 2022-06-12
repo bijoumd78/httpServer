@@ -18,7 +18,7 @@ using Poco::Timespan;
 
 namespace http_server
 {
-    std::vector<WebSocketReqHandler *> WebSocketReqHandler::connectedSockets_;
+    std::vector<WebSocketReqHandler *> WebSocketReqHandler::connectedChatSockets_;
     Poco::FastMutex                    WebSocketReqHandler::mtx_;
 
     WebSocketReqHandler::~WebSocketReqHandler()
@@ -28,6 +28,8 @@ namespace http_server
 
     void WebSocketReqHandler::handleRequest(Poco::Net::HTTPServerRequest& req, Poco::Net::HTTPServerResponse& res)
     {
+        Poco::Path path(req.getURI());
+
         try
         {
             if (!pWS_)
@@ -39,11 +41,12 @@ namespace http_server
                 pWS_->setReceiveTimeout(ts);
                 pWS_->setSendTimeout(ts);
 
-                Poco::FastMutex::ScopedLock lock(mtx_);
-                connectedSockets_.push_back(this);
+                if (Poco::icompare(path.toString(), "\\chat") == 0)
+                {
+                    Poco::FastMutex::ScopedLock lock(mtx_);
+                    connectedChatSockets_.push_back(this);
+                }
             }
-
-            Poco::Path path(req.getURI());
 
             if (Poco::icompare(path.toString(), "\\search") == 0)
             {
@@ -110,16 +113,17 @@ namespace http_server
         {
             Poco::Buffer<char> buf(0);
             auto n = pWS_->receiveFrame(buf, flags_);
-            if (!buf.empty())
+
+            if (!buf.empty() && flags_ != 136)
             {
                 std::string tmp;
                 tmp.resize(n);
                 std::copy(buf.begin(), buf.end(), begin(tmp));
 
                 // Sent message to all connected parties
-                if (!connectedSockets_.empty())
+                if (!connectedChatSockets_.empty())
                 {
-                    for (const auto& e : connectedSockets_)
+                    for (const auto& e : connectedChatSockets_)
                     {
                         e->send(tmp);
                     }
@@ -128,13 +132,13 @@ namespace http_server
             }
         }
 
-        for (auto it = connectedSockets_.begin(); it != connectedSockets_.end(); ++it)
+        for (auto it = connectedChatSockets_.begin(); it != connectedChatSockets_.end(); ++it)
         {
             if (*it == this)
             {
                 Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection closed");
                 Poco::FastMutex::ScopedLock lock(mtx_);
-                connectedSockets_.erase(it);
+                connectedChatSockets_.erase(it);
                 break;
             }
         }

@@ -22,8 +22,8 @@ namespace http_server
 
     private:
         std::unique_ptr<WebSocket>               pWS_;
-        int                                      flags_{129}; // Magic number 
-        static std::vector<WebSocketReqHandler*> connectedSockets_;
+        int                                      flags_{129};
+        static std::vector<WebSocketReqHandler*> connectedChatSockets_;
         static Poco::FastMutex                   mtx_;
     };
 }
