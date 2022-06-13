@@ -89,13 +89,13 @@ namespace Common::Logging {
         std::string checkJsonFromat(std::string_view msg)const;
 
         std::unique_ptr<Configuration> pConfig_;
-        static std::unique_ptr<Poco::Data::Session> pSession_;
+        inline static std::unique_ptr<Poco::Data::Session> pSession_;
         std::string        user_{ "postgres" };
         std::string        password_{ "password" };
         std::string        hostaddr_{ "127.0.0.1" };
         std::string        port_{ "5432" };
         std::string        level_{ "information" };
-        static std::string tableName_;
+        inline static std::string tableName_;
     };
 
 }

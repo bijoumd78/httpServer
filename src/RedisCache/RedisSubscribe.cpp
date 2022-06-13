@@ -8,9 +8,6 @@ namespace redissubscribe
 {
     using namespace Poco::Redis;
 
-    bool RedisSubscribe::connected_ = false;
-    Poco::Redis::Client RedisSubscribe::redis_;
-
     RedisSubscribe::RedisSubscribe(std::string_view configFile, std::string_view topic) :
         pConfig_{ std::make_unique<Common::Logging::Configuration>(configFile) },
         topic_{topic}

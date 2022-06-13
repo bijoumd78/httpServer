@@ -19,8 +19,8 @@ namespace redissubscribe
         std::string                                     host_{ "localhost" };
         unsigned                                        port_{ 6379 };
         std::string_view                                topic_{};
-        static bool                                     connected_;
-        static Poco::Redis::Client                      redis_;
+        inline static bool                              connected_ = false;
+        inline static Poco::Redis::Client               redis_;
     };
 }
 

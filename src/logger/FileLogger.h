@@ -46,7 +46,7 @@ namespace Common::Logging {
         AutoPtr<PatternFormatter> pPF_{ new PatternFormatter };
         AutoPtr<FormattingChannel> pFC_;
         std::unique_ptr<Configuration> pConfig_;
-        static std::string logDir_;
+        inline static std::string logDir_{};
     };
 
 }

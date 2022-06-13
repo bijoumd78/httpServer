@@ -21,10 +21,10 @@ namespace http_server
         void handleChat();
 
     private:
-        std::unique_ptr<WebSocket>               pWS_;
-        int                                      flags_{129};
-        static std::vector<WebSocketReqHandler*> connectedChatSockets_;
-        static Poco::FastMutex                   mtx_;
+        std::unique_ptr<WebSocket>                      pWS_;
+        int                                             flags_{129};
+        inline static std::vector<WebSocketReqHandler*> connectedChatSockets_;
+        inline static Poco::FastMutex                   mtx_;
     };
 }
 

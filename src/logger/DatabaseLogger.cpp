@@ -72,9 +72,6 @@ namespace Poco {
 
 
 namespace Common::Logging {
-    // static data members
-    std::unique_ptr<Poco::Data::Session>  DatabaseLogger::pSession_;
-    std::string                           DatabaseLogger::tableName_;
 
     using namespace Poco::Data::Keywords;
     using Poco::Data::PostgreSQL::PostgreSQLException;

@@ -18,9 +18,6 @@ using Poco::Timespan;
 
 namespace http_server
 {
-    std::vector<WebSocketReqHandler *> WebSocketReqHandler::connectedChatSockets_;
-    Poco::FastMutex                    WebSocketReqHandler::mtx_;
-
     WebSocketReqHandler::~WebSocketReqHandler()
     {
         shutdown();

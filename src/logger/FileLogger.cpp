@@ -8,7 +8,6 @@
 #include <fstream>
 
 namespace Common::Logging {
-    std::string FileLogger::logDir_{};
     FileLogger::FileLogger(std::string_view configFile):
         pFC_{ new FormattingChannel(pPF_, pFile_) },
         pConfig_{ std::make_unique<Configuration>(configFile) }

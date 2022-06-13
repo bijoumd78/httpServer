@@ -6,9 +6,6 @@ namespace redispublish
 {
     using namespace Poco::Redis;
 
-    bool RedisPublish::connected_ = false;
-    Poco::Redis::Client RedisPublish::redis_;
-
     RedisPublish::RedisPublish(std::string_view configFile) :
         pConfig_{ std::make_unique<Common::Logging::Configuration>(configFile) }
     {

@@ -10,9 +10,6 @@
 #include <fstream>
 
 namespace Common::Logging {
-    // Initialize static data members
-    std::vector<ILogger*> Logger::channels_{};
-    Poco::FastMutex Logger::mtx_;
 
     void Logger::addChannel(ILogger* channelPtr)
     {

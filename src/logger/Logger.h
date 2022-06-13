@@ -29,8 +29,8 @@ namespace Common::Logging {
         static void log(std::string_view level, std::string_view source, int transaction, std::string_view message);
 
     private:
-        static std::vector<ILogger*> channels_;
-        static Poco::FastMutex mtx_;
+        inline static std::vector<ILogger*> channels_;
+        inline static Poco::FastMutex mtx_;
     };
 
     // Explicit template instantiation

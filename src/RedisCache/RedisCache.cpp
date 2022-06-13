@@ -8,9 +8,6 @@ namespace rediscache
 {
     using namespace Poco::Redis;
 
-    bool RedisCache::connected_{ false };
-    Poco::Redis::Client RedisCache::redis_;
-
     RedisCache::RedisCache(std::string_view configFile):
         pConfig_{ std::make_unique<Common::Logging::Configuration>(configFile) }
     {
