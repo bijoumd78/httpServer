@@ -330,89 +330,85 @@ namespace http_server
     void PagesRequestHandler::fillOstream(std::string_view inputImgPath, std::string_view outputImgPath, std::ostream& ostr, bool isHourseZebra)const
     {
         ostr <<
-            "<!DOCTYPE html>\n"
-            "<html lang = \"en-US\">\n"
-            "<head>\n"
-            "<title>AI Power Image Processing</title>\n"
-            "<meta charset = \"utf-8\">\n"
-            "<meta name = \"viewport\" content = \"width=device-width, initial-scale=1, shrink-to-fit=no\">\n";
+            R"(<!DOCTYPE html>
+            <html lang = "en-US">
+            <head>
+            <title>AI Power Image Processing</title>
+            <meta charset = "utf-8">
+            <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">)";
         if (isHourseZebra) {
-            ostr << "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ai2.css\">\n";
+            ostr << R"(<link rel="stylesheet" type="text/css" href="css/ai2.css">)";
         }
         else
         {
-            ostr << "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/ai23.css\">\n";
+            ostr << R"(<link rel="stylesheet" type="text/css" href="css/ai23.css">)";
         }
         ostr <<
-            "<link rel = \"stylesheet\" type = \"text/css\" href = \"css/style.css\">\n"
-            "<script src = \"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>\n"
-            "<script src = \"javascripts/app.js\"></script>\n"
-            "</head>\n"
-            "<body>\n"
-            "<header>\n"
-            "<div class = \"container\">\n"
-            "<div class = \"title-header\">\n"
-            "<div class = \"logo\">\n"
-            "<a href = \"index.html\">\n"
-            "<img src = \"images/logo.png\" alt = \"Logo\">\n"
-            "<img src = \"images/coffee-cup-icon.png\" alt = \"Logo\">\n"
-            "</a>\n"
-            "</div>\n"
-            "<div class = \"title\">ClydeBank Coffee Shop</div>\n"
-            "</div>\n"
-            "</div>\n"
-            "</header>\n"
-            "<nav>\n"
-            "<div class = \"container\">\n"
-            "<ul>\n"
-            "<li class = \"active\"><a href = \"index.html\">Menu</a></li>\n"
-            "<li><a href = \"webSocketChat.html\">WebSocketChat</a></li>\n"
-            "<li><a href=\"chat.html\">Chat</a></li>"
-            "<li><a href = \"ai.html\">AI Image Processing</a></li>\n"
-            "<li><a href = \"events.html\">Events</a></li>\n"
-            "<li><a href = \"contact.html\">Contact</a></li>\n"
-            "</ul>\n"
-            "</div>\n"
-            "</nav>\n"
-            "<section>\n"
-            "<nav>\n"
-            "<div class=\"navcontainer\">\n"
-            "<ul>\n"
-            "</form>\n"
-            "<h2>Load Horse Image</h2>\n"
-            "<form id = \"horseZebra\" method = \"POST\" action = \"/aiform\" enctype = \"multipart/form-data\">\n"
-            "<label for = \"file\">Choose JPG image to upload</label>\n"
-            "<input type = \"file\" name = \"file\" size = \"31\"  accept = \"image/jpeg\">\n"
-            "<input type = \"submit\" id = \"btnHorseZebra\" value = \"Upload\">\n"
-            "</form>\n"
-            "</ul>\n"
-            "<br>\n"
-            "</br>\n"
-            "<ul>\n"
-            "</form>\n"
-            "<h2>High Resolution Image</h2>\n"
-            "<form id = \"highRes\" method = \"POST\" action = \"/aiform2\" enctype = \"multipart/form-data\">\n"
-            "<input type = \"file\" name = \"file\" size = \"31\"  accept = \"image/png, image/jpeg\">\n"
-            "<input type = \"submit\" id = \"btnHighRes\" value = \"Upload\">\n"
-            "</form>\n"
-            "</ul>\n"
-            "</div>\n"
-            "</nav>\n"
-            "<article>\n";
-        ostr <<
-            "<img src=";
+            R"(<link rel = "stylesheet" type = "text/css" href = "css/style.css">
+            <script src = "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src = "javascripts/app.js"></script>
+            </head>
+            <body>
+            <header>
+            <div class = "container">
+            <div class = "title-header">
+            <div class = "logo">
+            <a href = "index.html">
+            <img src = "images/logo.png" alt = "Logo">
+            <img src = "images/coffee-cup-icon.png" alt = "Logo">
+            </a>
+            </div>
+            <div class = "title">ClydeBank Coffee Shop</div>
+            </div>
+            </div>
+            </header>
+            <nav>
+            <div class = "container">
+            <ul>
+            <li class = "active"><a href = "index.html">Menu</a></li>
+            <li><a href = "webSocketChat.html">WebSocketChat</a></li>
+            <li><a href= "chat.html">Chat</a></li>
+            <li><a href = "ai.html">AI Image Processing</a></li>
+            <li><a href = "events.html">Events</a></li>
+            <li><a href = "contact.html">Contact</a></li>
+            </ul>
+            </div>
+            </nav>
+            <section>
+            <nav>
+            <div class="navcontainer">
+            <ul>
+            </form>
+            <h2>Load Horse Image</h2>
+            <form id = "horseZebra" method = "POST" action = "/aiform" enctype = "multipart/form-data">
+            <label for = "file">Choose JPG image to upload</label>
+            <input type = "file" name = "file" size = "31"  accept = "image/jpeg">
+            <input type = "submit" id = "btnHorseZebra" value = "Upload">
+            </form>
+            </ul>
+            <br>
+            </br>
+            <ul>
+            </form>
+            <h2>High Resolution Image</h2>
+            <form id = "highRes" method = "POST" action = "/aiform2" enctype = "multipart/form-data">
+            <input type = "file" name = "file" size = "31"  accept = "image/png, image/jpeg">
+            <input type = "submit" id = "btnHighRes" value = "Upload">
+            </form>
+            </ul>
+            </div>
+            </nav>
+            <article> <img src=)";
         ostr << inputImgPath;
-        ostr << " alt = \"Input image\" width=\"400\" height=\"400\">\n";
-        ostr <<
-            "<img src=";
+        ostr << R"( alt = "Input image" width="400" height="400"> <img src=)";
         ostr << outputImgPath;
-        ostr << " alt = \"Output image\">\n"
-            "</article>\n"
-            "</section>\n"
-            "<footer>\n"
-            "<p>&copy; All rights reserved</p>\n"
-            "</footer>\n"
-            "</body>\n"
-            "</html>\n";
+        ostr << R"( alt = "Output image">
+            </article>
+            </section>
+            <footer>
+            <p>&copy; All rights reserved</p>
+            </footer>
+            </body>
+            </html>)";
     }
 }

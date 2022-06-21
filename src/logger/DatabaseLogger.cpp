@@ -285,7 +285,7 @@ namespace Common::Logging {
         }
         catch (const Poco::Exception&) {
             std::stringstream ss;
-            ss << "{\"message\" : \"" << msg.data() << "\"}";
+            ss << R"({"message" : ")" << msg.data() << R"("})";
             return ss.str();
         }
     }
