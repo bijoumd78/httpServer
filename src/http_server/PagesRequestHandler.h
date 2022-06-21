@@ -6,7 +6,6 @@
 #include <Poco/Net/PartHandler.h>
 #include <Poco/Net/MessageHeader.h>
 #include <Poco/CountingStream.h>
-#include <Poco/NullStream.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/UUID.h>
 #include <Poco/UUIDGenerator.h>
