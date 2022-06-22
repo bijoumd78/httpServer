@@ -40,7 +40,7 @@
   <br></br>
   <div class="container">
     <button class="echo-button" id="connect">Connect</button>
-    <button class="echo-button" id="disconnect">Disconnect</button>
+    <button class="echo-button" id="disconnect" disabled="disabled">Disconnect</button>
     <br></br>
     Your Name: <input class="draw-border" id="userName" size=47 style="margin-bottom: 5px;"><br>
 
@@ -67,6 +67,8 @@
       ws.onopen = function (ev) {
         messages.innerText += "[connection opened]\n";
         scrollPre();
+        $('#connect').prop('disabled', true);
+        $('#disconnect').prop('disabled', false);
       };
       ws.onclose = function (ev) {
         messages.innerText += "[connection closed]\n";
@@ -84,6 +86,8 @@
     };
     disconnect.onclick = function () {
       ws.close();
+      $('#connect').prop('disabled', false);
+      $('#disconnect').prop('disabled', true);
     };
     send.onclick = function () {
       ws.send(userName.value + ": " + sendMessage.value);
