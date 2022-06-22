@@ -129,16 +129,11 @@ namespace http_server
             }
         }
 
-        for (auto it = connectedChatSockets_.begin(); it != connectedChatSockets_.end(); ++it)
-        {
-            if (*it == this)
-            {
-                Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection closed");
-                Poco::FastMutex::ScopedLock lock(mtx_);
-                connectedChatSockets_.erase(it);
-                break;
-            }
-        }
+        // Remove closed connection
+        Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection closed");
+        Poco::FastMutex::ScopedLock lock(mtx_);
+        connectedChatSockets_.erase(std::remove_if(connectedChatSockets_.begin(), connectedChatSockets_.end(), 
+            [this](const WebSocketReqHandler* it) { return it == this; }), connectedChatSockets_.end());
     }
 
     void WebSocketReqHandler::send(const std::string& buffer)

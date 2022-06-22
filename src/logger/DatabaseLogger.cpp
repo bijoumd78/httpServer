@@ -12,8 +12,7 @@
 #include <algorithm>
 
 
-namespace Poco {
-    namespace Data {
+namespace Poco::Data {
 
         template <>
         class TypeHandler<Row>
@@ -67,7 +66,6 @@ namespace Poco {
             TypeHandler(const TypeHandler&);
             TypeHandler& operator=(const TypeHandler&);
         };
-    }
 } // namespace Poco::Data
 
 
