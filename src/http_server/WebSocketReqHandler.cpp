@@ -118,13 +118,9 @@ namespace http_server
                 std::copy(buf.begin(), buf.end(), begin(tmp));
 
                 // Sent message to all connected parties
-                if (!connectedChatSockets_.empty())
+                for (const auto& e : connectedChatSockets_)
                 {
-                    for (const auto& e : connectedChatSockets_)
-                    {
-                        e->send(tmp);
-                    }
-
+                    e->send(tmp);
                 }
             }
         }
