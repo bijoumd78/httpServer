@@ -63,7 +63,7 @@ namespace Common::Logging {
         void getConfigParams(T& value, const std::string& key, std::function<T(const std::string&)> Fun);
 
         struct{
-            std::string  host{"127.0.0.1"};
+            std::string  host{"localhost"};
             unsigned int port{ 8100 };
         }redis_;
 
@@ -88,7 +88,7 @@ namespace Common::Logging {
             std::string name{"Dev"};
             std::string user{"postgres"};
             std::string password{"password"};
-            std::string host{"127.0.0.1"};
+            std::string host{"localhost"};
             std::string port{"5432"};
             std::string tableName{ "logs" };
         }database_;

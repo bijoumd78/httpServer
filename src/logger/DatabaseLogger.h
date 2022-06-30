@@ -92,7 +92,7 @@ namespace Common::Logging {
         inline static std::unique_ptr<Poco::Data::Session> pSession_;
         std::string        user_{ "postgres" };
         std::string        password_{ "password" };
-        std::string        hostaddr_{ "127.0.0.1" };
+        std::string        hostaddr_{ "localhost" };
         std::string        port_{ "5432" };
         std::string        level_{ "information" };
         inline static std::string tableName_;
