@@ -121,7 +121,6 @@ namespace redissubscribe
         redis_.execute<void>(subscribe);
         redis_.flush();
 
-        std::string stop{};
         for (;;)
         {
             AsyncReader reader(redis_);
@@ -129,7 +128,7 @@ namespace redissubscribe
             reader.redisException += Poco::delegate(&subscriber, &RedisSubscriber::onError);
             reader.start();
 
-            stop = RedisSubscriber::getMessage();
+            const auto& stop = RedisSubscriber::getMessage();
 
             // Published message
             std::cout << stop << std::endl;

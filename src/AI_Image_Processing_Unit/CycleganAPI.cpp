@@ -7,12 +7,10 @@ namespace AI::ImageProcessingUnit
         stride_(2, stride),
         padding_(2, padding),
         output_padding_(2, output_padding),
-        dilation_(2, 1)
-    {
-        // not good init...
-        weight = register_parameter("weight", torch::randn({ out_channels, in_channels, kernel_size, kernel_size }));
-        bias = register_parameter("bias", torch::randn({ out_channels }));
-    }
+        dilation_(2, 1),
+        weight{ register_parameter("weight", torch::randn({ out_channels, in_channels, kernel_size, kernel_size })) },
+        bias{ register_parameter("bias", torch::randn({ out_channels })) }
+    {}
 
     Tensor ConvTranspose2d::forward(const Tensor &inp)
     {
