@@ -1,0 +1,5 @@
+{
+    "writeToConsole" : true,
+    "writeToFile" : true,
+    "writeToDB" : false
+}

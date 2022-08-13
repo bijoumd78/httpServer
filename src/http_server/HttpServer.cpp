@@ -35,6 +35,17 @@ namespace
 
 namespace http_server
 {
+    void HttpServer::initialize(Application& self)
+    {
+        // Load default configuration file: AIRESTAPI.json
+        loadConfiguration(); 
+        Application::initialize(self);
+        auto tmp = self.configPtr();
+        isLoggingToConsoleEnable_ = tmp->getBool("writeToConsole");
+        isLoggingToFileEnable_    = tmp->getBool("writeToFile");
+        isLoggingToDBEnable_      = tmp->getBool("writeToDB");
+    }
+
     void HttpServer::defineOptions(Poco::Util::OptionSet& options)
     {
         Application::defineOptions(options);
@@ -74,13 +85,11 @@ namespace http_server
 
             // Application Logging registration
             Common::Logging::ConsoleLogger pConsolechannel(configFile_);
-            Common::Logging::Logger::addChannel(&pConsolechannel);
-
+            if (isLoggingToConsoleEnable_) { Common::Logging::Logger::addChannel(&pConsolechannel); }
             Common::Logging::FileLogger pFilechannel(configFile_);
-            Common::Logging::Logger::addChannel(&pFilechannel);
-
-            //Common::Logging::DatabaseLogger pDatabasechannel(configFile_);
-            //Common::Logging::Logger::addChannel(&pDatabasechannel);
+            if (isLoggingToFileEnable_) { Common::Logging::Logger::addChannel(&pFilechannel); }
+            Common::Logging::DatabaseLogger pDatabasechannel(configFile_);
+            if (isLoggingToDBEnable_) { Common::Logging::Logger::addChannel(&pDatabasechannel); }
 
             // Connect to redis server
             rediscache::RedisCache rc(configFile_);

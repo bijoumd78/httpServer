@@ -7,6 +7,7 @@ namespace http_server
     class HttpServer : public Poco::Util::ServerApplication
     {
     protected:
+        void initialize(Application& self)override;
         void defineOptions(Poco::Util::OptionSet& options) override;
         int main(const std::vector<std::string>& args) override;
 
@@ -20,6 +21,9 @@ namespace http_server
         bool isHelpRequested_{ false };
         std::string port_{ "5849" };
         std::string configFile_{ "Config.json" };
+        bool isLoggingToConsoleEnable_;
+        bool isLoggingToFileEnable_;
+        bool isLoggingToDBEnable_;
     };
 
 

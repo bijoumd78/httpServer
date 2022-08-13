@@ -28,11 +28,12 @@ install (TARGETS
     DESTINATION ${INSTALL_INCLUDEDIR}
     COMPONENT dev)
 
-message (STATUS "Copying configuration file Config.json to the binary directory")
+message (STATUS "Copying configuration files Config.json and AIRESTAPI.json to the binary directory")
 add_custom_command(TARGET AIRESTAPI 
                     POST_BUILD
                     COMMAND ${CMAKE_COMMAND} -E copy_if_different 
                     ${PROJECT_SOURCE_DIR}/config/Config.JSON 
+                    ${PROJECT_SOURCE_DIR}/config/AIRESTAPI.json
                     $<TARGET_FILE_DIR:AIRESTAPI>)
 
 if(ENABLE_UNIT_TESTS)
