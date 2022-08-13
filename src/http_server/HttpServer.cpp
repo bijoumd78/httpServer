@@ -41,9 +41,9 @@ namespace http_server
         loadConfiguration(); 
         Application::initialize(self);
         auto tmp = self.configPtr();
-        isLoggingToConsoleEnable_ = tmp->getBool("writeToConsole");
-        isLoggingToFileEnable_    = tmp->getBool("writeToFile");
-        isLoggingToDBEnable_      = tmp->getBool("writeToDB");
+        isLoggingToConsoleEnabled_ = tmp->getBool("writeToConsole");
+        isLoggingToFileEnabled_    = tmp->getBool("writeToFile");
+        isLoggingToDBEnabled_      = tmp->getBool("writeToDB");
     }
 
     void HttpServer::defineOptions(Poco::Util::OptionSet& options)
@@ -85,11 +85,11 @@ namespace http_server
 
             // Application Logging registration
             Common::Logging::ConsoleLogger pConsolechannel(configFile_);
-            if (isLoggingToConsoleEnable_) { Common::Logging::Logger::addChannel(&pConsolechannel); }
+            if (isLoggingToConsoleEnabled_) { Common::Logging::Logger::addChannel(&pConsolechannel); }
             Common::Logging::FileLogger pFilechannel(configFile_);
-            if (isLoggingToFileEnable_) { Common::Logging::Logger::addChannel(&pFilechannel); }
+            if (isLoggingToFileEnabled_) { Common::Logging::Logger::addChannel(&pFilechannel); }
             Common::Logging::DatabaseLogger pDatabasechannel(configFile_);
-            if (isLoggingToDBEnable_) { Common::Logging::Logger::addChannel(&pDatabasechannel); }
+            if (isLoggingToDBEnabled_) { Common::Logging::Logger::addChannel(&pDatabasechannel); }
 
             // Connect to redis server
             rediscache::RedisCache rc(configFile_);

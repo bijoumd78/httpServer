@@ -21,9 +21,9 @@ namespace http_server
         bool isHelpRequested_{ false };
         std::string port_{ "5849" };
         std::string configFile_{ "Config.json" };
-        bool isLoggingToConsoleEnable_;
-        bool isLoggingToFileEnable_;
-        bool isLoggingToDBEnable_;
+        bool isLoggingToConsoleEnabled_;
+        bool isLoggingToFileEnabled_;
+        bool isLoggingToDBEnabled_;
     };
 
 
