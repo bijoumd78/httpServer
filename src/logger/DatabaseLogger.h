@@ -58,6 +58,7 @@ namespace Common::Logging {
     class DatabaseLogger final : public ILogger
     {
     public:
+        DatabaseLogger() = delete;
         explicit DatabaseLogger(std::string_view configFile);
         ~DatabaseLogger()override;
 

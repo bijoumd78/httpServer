@@ -8,6 +8,7 @@ namespace Common::Logging {
     class ConsoleLogger final : public ILogger
     {
     public:
+        ConsoleLogger() = delete;
         explicit ConsoleLogger(std::string_view configFile);
         ~ConsoleLogger() override= default;
 

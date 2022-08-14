@@ -12,11 +12,20 @@ namespace Common::Logging {
     class Configuration : public Poco::Util::JSONConfiguration
     {
     public:
+        Configuration() = delete;
         explicit Configuration(std::string_view configFile);
         ~Configuration() override = default;
 
+        // Prevent copy construction and assignment operation.
+        Configuration(const Configuration&) = delete;
+        Configuration& operator=(const Configuration&) = delete;
+
+        // Allow move construction and assignment operation.
+        Configuration(Configuration&&) = default;
+        Configuration& operator=(Configuration&&) = default;
+
         //Load config file
-        void load(std::string_view path);
+        void loadConfigFile(std::string_view path);
 
         std::string              getRedisHost()const;
         unsigned int             getRedisPort()const;

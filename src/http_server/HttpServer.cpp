@@ -94,7 +94,7 @@ namespace http_server
             // Connect to redis server
             rediscache::RedisCache rc(configFile_);
             Poco::Net::HTTPServerParams::Ptr parameters = new Poco::Net::HTTPServerParams();
-            parameters->setTimeout(100000);
+            parameters->setTimeout(100'000);
             parameters->setMaxQueued(100);
             parameters->setMaxThreads(12);
 

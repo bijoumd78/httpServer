@@ -15,6 +15,7 @@ namespace Common::Logging {
     class FileLogger final : public ILogger
     {
     public:
+        FileLogger() = delete;
         explicit FileLogger(std::string_view configFile);
         ~FileLogger() override= default;
 

@@ -7,10 +7,10 @@ namespace Common::Logging {
 
     Configuration::Configuration(std::string_view configFile)
     {
-        load(configFile);
+        loadConfigFile(configFile);
     }
 
-    void Configuration::load(std::string_view path)
+    void Configuration::loadConfigFile(std::string_view path)
     {
         // Load configuration file
         pConfJson->load(path.data());
