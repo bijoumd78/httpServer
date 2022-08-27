@@ -40,6 +40,7 @@ namespace Common::Logging {
         std::string              getFilePurgeAge()const;
         std::string              getFilePurgeCount()const;
         std::string              getFileLoggingLevel()const;
+        std::string              getDbTimeZone()const;
         std::string              getDbName()const;
         std::string              getDbUser()const;
         std::string              getDbPassword()const;
@@ -61,6 +62,7 @@ namespace Common::Logging {
         void setFilePurgeAge(std::string_view filePurgeAge);
         void setFilePurgeCount(std::string_view filePurgeCount);
         void setFileLoggingLevel(std::string_view fileLoggingLevel);
+        void setDbTimeZone(std::string_view dbTimeZone);
         void setDbName(std::string_view dbName);
         void setDbUser(std::string_view dbUser);
         void setDbPassword(std::string_view dbPassword);
@@ -97,6 +99,7 @@ namespace Common::Logging {
 
         struct {
             inline static std::string loggingLevel{"information"};
+            inline static std::string times_{ "UTC" };
             inline static std::string name{"Dev"};
             inline static std::string user{"postgres"};
             inline static std::string password{"password"};

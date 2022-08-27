@@ -91,6 +91,7 @@ namespace Common::Logging {
 
         std::unique_ptr<Configuration> pConfig_;
         inline static std::unique_ptr<Poco::Data::Session> pSession_;
+        std::string        times_{ "UTC" };
         std::string        user_{ "postgres" };
         std::string        password_{ "password" };
         std::string        hostaddr_{ "localhost" };

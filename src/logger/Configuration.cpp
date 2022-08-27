@@ -33,7 +33,7 @@ namespace Common::Logging {
             if (const auto object1 = arr->getObject(SIZE - 1); Poco::icompare(object1->getValue<std::string>("type"), "console") == 0)
             {
                 getConfigParams<std::string>(console_.loggingLevel, "loggingLevel", [&object1](const std::string& key) { return object1->getValue<std::string>(key); });
-                getConfigParams<std::string>(console_.times_,        "times",        [&object1](const std::string& key) { return object1->getValue<std::string>(key); });
+                getConfigParams<std::string>(console_.times_,       "times",        [&object1](const std::string& key) { return object1->getValue<std::string>(key); });
             }
             else if (const auto object2 = arr->getObject(SIZE - 1); Poco::icompare(object2->getValue<std::string>("type"), "file") == 0)
             {
@@ -50,6 +50,7 @@ namespace Common::Logging {
             else if(const auto object3 = arr->getObject(SIZE - 1); Poco::icompare(object3->getValue<std::string>("type"), "database") == 0)
             {
                 database_.loggingLevel = object3->getValue<std::string>("loggingLevel");
+                database_.loggingLevel = object3->getValue<std::string>("times");
                 database_.name         = object3->getValue<std::string>("name");
                 database_.user         = object3->getValue<std::string>("user");
                 database_.password     = object3->getValue<std::string>("password");
@@ -58,6 +59,7 @@ namespace Common::Logging {
                 database_.tableName    = object3->getValue<std::string>("tableName");
 
                 getConfigParams<std::string>(database_.loggingLevel, "loggingLevel", [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
+                getConfigParams<std::string>(database_.times_,       "times",        [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
                 getConfigParams<std::string>(database_.name,         "name",         [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
                 getConfigParams<std::string>(database_.user,         "user",         [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
                 getConfigParams<std::string>(database_.password,     "password",     [&object3](const std::string& key) { return object3->getValue<std::string>(key); });
@@ -136,6 +138,11 @@ namespace Common::Logging {
     std::string Configuration::getFileLoggingLevel() const
     {
         return file_.loggingLevel;
+    }
+
+    std::string Configuration::getDbTimeZone() const
+    {
+        return database_.times_;
     }
 
     std::string Configuration::getDbName() const
@@ -236,6 +243,11 @@ namespace Common::Logging {
     void Configuration::setFileLoggingLevel(std::string_view fileLoggingLevel)
     {
         file_.loggingLevel = fileLoggingLevel;
+    }
+
+    void Configuration::setDbTimeZone(std::string_view dbTimeZone)
+    {
+        database_.times_ = dbTimeZone;
     }
 
     void Configuration::setDbName(std::string_view dbName)
