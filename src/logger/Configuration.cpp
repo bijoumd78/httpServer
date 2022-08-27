@@ -33,6 +33,7 @@ namespace Common::Logging {
             if (const auto object1 = arr->getObject(SIZE - 1); Poco::icompare(object1->getValue<std::string>("type"), "console") == 0)
             {
                 getConfigParams<std::string>(console_.loggingLevel, "loggingLevel", [&object1](const std::string& key) { return object1->getValue<std::string>(key); });
+                getConfigParams<std::string>(console_.times_,        "times",        [&object1](const std::string& key) { return object1->getValue<std::string>(key); });
             }
             else if (const auto object2 = arr->getObject(SIZE - 1); Poco::icompare(object2->getValue<std::string>("type"), "file") == 0)
             {
@@ -87,6 +88,11 @@ namespace Common::Logging {
         return console_.loggingLevel;
     }
 
+    std::string Configuration::getConsoleTimeZone() const
+    {
+        return console_.times_;
+    }
+
     std::string Configuration::getFilePath() const
     {
         return file_.path;
@@ -107,7 +113,7 @@ namespace Common::Logging {
         return file_.pattern;
     }
 
-    std::string Configuration::getFileTimes() const
+    std::string Configuration::getFileTimeZone() const
     {
         return file_.times;
     }
@@ -182,6 +188,11 @@ namespace Common::Logging {
         console_.loggingLevel = consoleLoggingLevel;
     }
 
+    void Configuration::setConsoleTimeZone(std::string_view consoleTimesZone)
+    {
+        console_.times_ = consoleTimesZone;
+    }
+
     void Configuration::setFilePath(std::string_view filePath)
     {
         file_.path = filePath;
@@ -202,7 +213,7 @@ namespace Common::Logging {
         file_.pattern = filePattern;
     }
 
-    void Configuration::setFileTimes(std::string_view fileTimes)
+    void Configuration::setFileTimeZone(std::string_view fileTimes)
     {
         file_.times = fileTimes;
     }

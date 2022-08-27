@@ -31,6 +31,7 @@ namespace Common::Logging {
         void log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg);
         std::unique_ptr<Configuration> pConfig_;
         std::string level_{ "information" };
+        std::string times_{ "UTC" };
     };
 
 }

@@ -4,7 +4,8 @@
   "channelType": [
     {
       "type": "console",
-      "loggingLevel": "information"
+      "loggingLevel": "information",
+      "times": "local"
     },
     {
       "type": "file",

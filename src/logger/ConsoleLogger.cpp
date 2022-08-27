@@ -7,7 +7,8 @@
 namespace Common::Logging {
     ConsoleLogger::ConsoleLogger(std::string_view configFile):
         pConfig_{std::make_unique<Configuration>(configFile)},
-        level_{ pConfig_->getConsoleLoggingLevel() }
+        level_{ pConfig_->getConsoleLoggingLevel() },
+        times_{pConfig_->getConsoleTimeZone()}
     {
     }
 
@@ -62,8 +63,22 @@ namespace Common::Logging {
     void ConsoleLogger::log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg)
     {
         // Get current time
-        Poco::Timestamp now;
-        const auto timestamp = Poco::DateTimeFormatter::format(now, Poco::DateTimeFormat::SORTABLE_FORMAT);
+        std::string timestamp{};
+        if (Poco::icompare(times_, "UTC") == 0)
+        {
+            Poco::Timestamp now;
+            timestamp = Poco::DateTimeFormatter::format(now, Poco::DateTimeFormat::SORTABLE_FORMAT);
+        }
+        else if (Poco::icompare(times_, "Local") == 0)
+        {
+            Poco::LocalDateTime now;
+            timestamp = Poco::DateTimeFormatter::format(now, Poco::DateTimeFormat::SORTABLE_FORMAT);
+        }
+        else
+        {
+            throw Poco::InvalidArgumentException("Invalid time zone. Supported time zones : UTC and Local");
+        }
+
         std::stringstream ss;
         ss << std::left
            << std::setw(20) << timestamp.c_str()

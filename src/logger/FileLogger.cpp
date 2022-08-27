@@ -104,7 +104,7 @@ namespace Common::Logging {
         filePtr->setProperty("purgeAge", configPtr->getFilePurgeAge());
         filePtr->setProperty("purgeCount", configPtr->getFilePurgeCount());
         patternFormatterPtr->setProperty("pattern", configPtr->getFilePattern());
-        patternFormatterPtr->setProperty("times", configPtr->getFileTimes());
+        patternFormatterPtr->setProperty("times", configPtr->getFileTimeZone());
         Poco::Logger::root().setLevel(configPtr->getFileLoggingLevel());
         Poco::Logger::root().setChannel(formattingChannelPtr);
     }

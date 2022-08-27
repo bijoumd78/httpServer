@@ -30,11 +30,12 @@ namespace Common::Logging {
         std::string              getRedisHost()const;
         unsigned int             getRedisPort()const;
         std::string              getConsoleLoggingLevel()const;
+        std::string              getConsoleTimeZone()const;
         std::string              getFilePath()const;
         std::string              getFileRotation()const;
         std::string              getFileArchive()const;
         std::string              getFilePattern()const;
-        std::string              getFileTimes()const;
+        std::string              getFileTimeZone()const;
         std::string              getFileCompress()const;
         std::string              getFilePurgeAge()const;
         std::string              getFilePurgeCount()const;
@@ -50,11 +51,12 @@ namespace Common::Logging {
         void setRedisHost(std::string_view host);
         void setRedisPort(unsigned int port);
         void setConsoleLoggingLevel(std::string_view consoleLoggingLevel);
+        void setConsoleTimeZone(std::string_view consoleTimeZone);
         void setFilePath(std::string_view filePath);
         void setFileRotation(std::string_view fileRotation);
         void setFileArchive(std::string_view fileArchive);
         void setFilePattern(std::string_view filePattern);
-        void setFileTimes(std::string_view fileTimes);
+        void setFileTimeZone(std::string_view fileTimeZone);
         void setFileCompress(std::string_view fileCompress);
         void setFilePurgeAge(std::string_view filePurgeAge);
         void setFilePurgeCount(std::string_view filePurgeCount);
@@ -78,6 +80,7 @@ namespace Common::Logging {
 
         struct {
             inline static std::string loggingLevel{"information"};
+            inline static std::string times_{ "UTC" };
         }console_;
 
         struct {
