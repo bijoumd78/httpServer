@@ -50,7 +50,7 @@ namespace Common::Logging {
             else if(const auto object3 = arr->getObject(SIZE - 1); Poco::icompare(object3->getValue<std::string>("type"), "database") == 0)
             {
                 database_.loggingLevel = object3->getValue<std::string>("loggingLevel");
-                database_.loggingLevel = object3->getValue<std::string>("times");
+                database_.times_       = object3->getValue<std::string>("times");
                 database_.name         = object3->getValue<std::string>("name");
                 database_.user         = object3->getValue<std::string>("user");
                 database_.password     = object3->getValue<std::string>("password");
