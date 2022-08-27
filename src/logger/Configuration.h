@@ -72,34 +72,34 @@ namespace Common::Logging {
         void getConfigParams(T& value, const std::string& key, std::function<T(const std::string&)> Fun);
 
         struct{
-            std::string  host{"localhost"};
-            unsigned int port{ 8100 };
+            inline static std::string  host{"localhost"};
+            inline static unsigned int port{ 8100 };
         }redis_;
 
         struct {
-            std::string loggingLevel{"information"};
+            inline static std::string loggingLevel{"information"};
         }console_;
 
         struct {
-            std::string path{"logs/my_logFile"};
-            std::string rotation{ "2 K" };
-            std::string archive{ "timestamp" };
-            std::string pattern{ "%Y-%m-%d %H:%M:%S %s %t" };
-            std::string times{ "local" };
-            std::string compress{ "false" };
-            std::string purgeAge{ "12 months" };
-            std::string purgeCount{ "100" };
-            std::string loggingLevel{"information"};
+            inline static std::string path{"logs/my_logFile"};
+            inline static std::string rotation{ "2 K" };
+            inline static std::string archive{ "timestamp" };
+            inline static std::string pattern{ "%Y-%m-%d %H:%M:%S %s %t" };
+            inline static std::string times{ "local" };
+            inline static std::string compress{ "false" };
+            inline static std::string purgeAge{ "12 months" };
+            inline static std::string purgeCount{ "100" };
+            inline static std::string loggingLevel{"information"};
         }file_;
 
         struct {
-            std::string loggingLevel{"information"};
-            std::string name{"Dev"};
-            std::string user{"postgres"};
-            std::string password{"password"};
-            std::string host{"localhost"};
-            std::string port{"5432"};
-            std::string tableName{ "logs" };
+            inline static std::string loggingLevel{"information"};
+            inline static std::string name{"Dev"};
+            inline static std::string user{"postgres"};
+            inline static std::string password{"password"};
+            inline static std::string host{"localhost"};
+            inline static std::string port{"5432"};
+            inline static std::string tableName{ "logs" };
         }database_;
 
         AutoPtr<JSONConfiguration> pConfJson{ new JSONConfiguration };

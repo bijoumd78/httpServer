@@ -7,7 +7,10 @@ namespace Common::Logging {
 
     Configuration::Configuration(std::string_view configFile)
     {
-        loadConfigFile(configFile);
+        // Load the configuration file once 
+        // This Lambda trick is equivalent to the call_once functionality but nicer.
+        static auto tmp = [this, &configFile]() { loadConfigFile(configFile); return 0; }();
+        (void)tmp;
     }
 
     void Configuration::loadConfigFile(std::string_view path)
