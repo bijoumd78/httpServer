@@ -20,8 +20,8 @@ namespace Common::Logging {
         ConsoleLogger(ConsoleLogger&&) = default;
         ConsoleLogger& operator=(ConsoleLogger&&) = default;
 
-        void logFatal(std::string_view source, const int transaction, std::string_view msgconst, const char* fileName , const int lineNumber) override;
-        void logError(std::string_view source, const int transaction, std::string_view msgconst, const char* fileName, const int lineNumber) override;
+        void logFatal(std::string_view source, const int transaction, std::string_view msg, const char* fileName , const int lineNumber) override;
+        void logError(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber) override;
         void logWarning(std::string_view source, const int transaction, std::string_view msg) override;
         void logInfo(std::string_view source, const int transaction, std::string_view msg) override;
         void logDebug(std::string_view source, const int transaction, std::string_view msg) override;
