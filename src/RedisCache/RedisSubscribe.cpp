@@ -30,7 +30,7 @@ namespace redissubscribe
             catch (const Poco::Exception& e)
             {
                 ss << "Couldn't connect to [" << host_ << ':' << port_ << ']' << e.message() << ". ";
-                Common::Logging::Logger::log("error", "RedisPublish", -1, ss.str());
+                Common::Logging::Logger::log("error", "RedisPublish", -1, ss.str(), __FILE__, __LINE__);
             }
         }
     }
@@ -91,7 +91,7 @@ namespace redissubscribe
         {
             // No need to call stop, AsyncReader stops automatically when an
             // exception is received.
-            Common::Logging::Logger::log("error", "RedisSubscribe", -1, args.exception()->className());
+            Common::Logging::Logger::log("error", "RedisSubscribe", -1, args.exception()->className(), __FILE__, __LINE__);
         }
 
         static std::string getMessage()
@@ -109,7 +109,7 @@ namespace redissubscribe
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisSubscribe", -1, "Not connected to Redis server.");
+            Common::Logging::Logger::log("error", "RedisSubscribe", -1, "Not connected to Redis server.", __FILE__, __LINE__);
             return;
         }
 

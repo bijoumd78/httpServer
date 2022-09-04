@@ -43,8 +43,7 @@ namespace Common::Logging {
                 if (re.match(line, mtch))
                 {
                      std::vector<std::string> vec;
-                     vec.push_back(Poco::DateTimeFormatter::format(it->getLastModified(), Poco::DateTimeFormat::SORTABLE_FORMAT));
-                     vec.push_back(p.getFileName());
+                     vec.push_back(p.getFileName() + ":");
                      Poco::StringTokenizer tok(line, " ", Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
                      vec.push_back(tok[0] + " " + tok[1]);
                      vec.push_back(tok[2].substr(1, tok[2].length() - 3));
@@ -64,13 +63,23 @@ namespace Common::Logging {
         return logDir_;
     }
 
-	void FileLogger::logFatal(std::string_view source, const int transaction, std::string_view msg)
+	void FileLogger::logFatal(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber)
     {
+        // Add line and file information
+        std::stringstream ss;
+        ss << fileName << " " << lineNumber << " " << source;
+        source = ss.str();
+
         Poco::Logger::root().fatal("[FATAL]:    " + std::string{ source.data() + std::string{" "} + std::to_string(transaction) + std::string{" "} + msg.data() });
     }
 
-    void FileLogger::logError(std::string_view source, const int transaction, std::string_view msg)
+    void FileLogger::logError(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber)
     {
+        // Add line and file information
+        std::stringstream ss;
+        ss << fileName << " " << lineNumber << " " << source;
+        source = ss.str();
+
         Poco::Logger::root().error("[ERROR]:    " + std::string{ source.data() + std::string{" "} + std::to_string(transaction) + std::string{" "} + msg.data() });
     }
 

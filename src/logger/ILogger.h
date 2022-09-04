@@ -21,8 +21,8 @@ namespace Common::Logging {
     public:
         virtual ~ILogger() = default;
 
-        virtual void logFatal(std::string_view source, const int transaction, std::string_view msg) = 0;
-        virtual void logError(std::string_view source, const int transaction, std::string_view msg) = 0;
+        virtual void logFatal(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber) = 0;
+        virtual void logError(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber) = 0;
         virtual void logWarning(std::string_view source, const int transaction, std::string_view msg) = 0;
         virtual void logInfo(std::string_view source, const int transaction, std::string_view msg) = 0;
         virtual void logDebug(std::string_view source, const int transaction, std::string_view msg) = 0;

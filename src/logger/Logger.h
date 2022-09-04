@@ -26,7 +26,8 @@ namespace Common::Logging {
         template<typename T>
         static std::vector<std::string> search(const std::string& pattern);
 
-        static void log(std::string_view level, std::string_view source, int transaction, std::string_view message);
+        static void log(std::string_view level, std::string_view source, int transaction, std::string_view msg, const char* fileName, const int lineNumber);
+        static void log(std::string_view level, std::string_view source, int transaction, std::string_view msg);
 
     private:
         inline static std::vector<ILogger*> channels_;

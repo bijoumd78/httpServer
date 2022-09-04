@@ -30,7 +30,7 @@ namespace rediscache
             {
                 ss.str(std::string{});
                 ss << "Couldn't connect to [" << host_ << ':' << port_ << ']' << e.message() << ".";
-                Common::Logging::Logger::log("error", "RedisCache", -1, ss.str());
+                Common::Logging::Logger::log("error", "RedisCache", -1, ss.str(), __FILE__, __LINE__);
             }
         }
     }
@@ -51,7 +51,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -64,7 +64,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }
@@ -73,7 +73,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -90,7 +90,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }
@@ -99,7 +99,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -117,7 +117,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }
@@ -126,7 +126,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return{};
         }
 
@@ -139,7 +139,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return{};
     }
@@ -148,7 +148,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return{};
         }
 
@@ -181,11 +181,11 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         catch (const Poco::BadCastException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
 
         return {};
@@ -195,7 +195,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -207,7 +207,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }
@@ -216,7 +216,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return{};
         }
 
@@ -228,7 +228,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return{};
     }
@@ -237,7 +237,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -249,7 +249,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }
@@ -258,7 +258,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -270,11 +270,11 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         catch (const Poco::BadCastException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }
@@ -283,7 +283,7 @@ namespace rediscache
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server");
+            Common::Logging::Logger::log("error", "RedisCache", -1, "Not connected to Redis server", __FILE__, __LINE__);
             return false;
         }
 
@@ -297,7 +297,7 @@ namespace rediscache
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisCache", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisCache", -1, e.message(), __FILE__, __LINE__);
         }
         return false;
     }

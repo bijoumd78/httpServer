@@ -27,7 +27,7 @@ namespace redispublish
             catch (const Poco::Exception& e)
             {
                 ss << "Couldn't connect to [" << host_ << ':' << port_ << ']' << e.message() << ". ";
-                Common::Logging::Logger::log("error", "RedisPublish", -1, ss.str());
+                Common::Logging::Logger::log("error", "RedisPublish", -1, ss.str(), __FILE__, __LINE__);
             }
         }
     }
@@ -52,11 +52,11 @@ namespace redispublish
         }
         catch (const RedisException& e)
         {
-            Common::Logging::Logger::log("error", "RedisPublish", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisPublish", -1, e.message(), __FILE__, __LINE__);
         }
         catch (const Poco::BadCastException& e)
         {
-            Common::Logging::Logger::log("error", "RedisPublish", -1, e.message());
+            Common::Logging::Logger::log("error", "RedisPublish", -1, e.message(), __FILE__, __LINE__);
         }
     }
 
@@ -64,7 +64,7 @@ namespace redispublish
     {
         if (!connected_)
         {
-            Common::Logging::Logger::log("error", "RedisPublish", -1, "Not connected to Redis server.");
+            Common::Logging::Logger::log("error", "RedisPublish", -1, "Not connected to Redis server.", __FILE__, __LINE__);
             return;
         }
 

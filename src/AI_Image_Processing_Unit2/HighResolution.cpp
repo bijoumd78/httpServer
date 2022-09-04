@@ -134,7 +134,7 @@ namespace AI::ImageProcessingUnit2
             {
                 std::stringstream ss;
                 ss << "Input file '" << input_image_path.c_str() << "' processing error";
-                Common::Logging::Logger::log("error", "HighRes", -1, ss.str());
+                Common::Logging::Logger::log("error", "HighRes", -1, ss.str(), __FILE__, __LINE__);
             }
             input_image_stream.close();
         }
@@ -142,7 +142,7 @@ namespace AI::ImageProcessingUnit2
         {
             std::stringstream ss;
             ss << "Unable to read input file '" << input_image_path.c_str() << "'";
-            Common::Logging::Logger::log("error", "HighRes", -1, ss.str());
+            Common::Logging::Logger::log("error", "HighRes", -1, ss.str(), __FILE__, __LINE__);
         }
         return image;
     }
@@ -205,7 +205,7 @@ namespace AI::ImageProcessingUnit2
 #endif
         if (!cv::imwrite(outputImagePath_, BGRImage))
         {
-            Common::Logging::Logger::log("error", "HighRes", -1, "Failed to save final image: " + outputImagePath_);
+            Common::Logging::Logger::log("error", "HighRes", -1, "Failed to save final image: " + outputImagePath_, __FILE__, __LINE__);
         }
     }
 

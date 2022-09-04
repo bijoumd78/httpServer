@@ -59,7 +59,7 @@ namespace Common::Logging {
         return std::vector<std::string>{};
     }
 
-    void Logger::log(std::string_view level, std::string_view source, int transaction, std::string_view msg)
+    void Logger::log(std::string_view level, std::string_view source, int transaction, std::string_view msg, const char* fileName, const int lineNumber)
     {
         Poco::FastMutex::ScopedLock lock(mtx_);
 
@@ -70,11 +70,28 @@ namespace Common::Logging {
                 switch (ILogger::getLoggingLevel(level.data()))
                 {
                 case Level::fatal:
-                    e->logFatal(source, transaction, msg);
+                    e->logFatal(source, transaction, msg, fileName, lineNumber);
                     break;
                 case Level::error:
-                    e->logError(source, transaction, msg);
+                    e->logError(source, transaction, msg, fileName, lineNumber);
                     break;
+                default:
+                    throw Poco::InvalidArgumentException("Unknown logging level");
+                }
+            }
+        }
+    }
+
+    void Logger::log(std::string_view level, std::string_view source, int transaction, std::string_view msg)
+    {
+        Poco::FastMutex::ScopedLock lock(mtx_);
+
+        if (!channels_.empty())
+        {
+            for (const auto& e : channels_)
+            {
+                switch (ILogger::getLoggingLevel(level.data()))
+                {
                 case Level::warning:
                     e->logWarning(source, transaction, msg);
                     break;

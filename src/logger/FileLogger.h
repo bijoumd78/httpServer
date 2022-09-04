@@ -32,8 +32,8 @@ namespace Common::Logging {
         static std::vector<std::string> search(const std::string& pattern);
         static std::string getLogdirectory();
 
-        void logFatal(std::string_view source, const int transaction, std::string_view msg) override;
-        void logError(std::string_view source, const int transaction, std::string_view msg) override;
+        void logFatal(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber) override;
+        void logError(std::string_view source, const int transaction, std::string_view msg, const char* fileName, const int lineNumber) override;
         void logWarning(std::string_view source, const int transaction, std::string_view msg) override;
         void logInfo(std::string_view source, const int transaction, std::string_view msg) override;
         void logDebug(std::string_view source, const int transaction, std::string_view msg) override;

@@ -142,19 +142,19 @@ namespace Common::Logging {
         return result;
     }
 
-    void DatabaseLogger::logFatal(std::string_view source, const int transaction_id, std::string_view msg)
+    void DatabaseLogger::logFatal(std::string_view source, const int transaction_id, std::string_view msg, const char* fileName, const int lineNumber)
     {
         if (getLoggingLevel(level_) >= Level::fatal)
         {
-            log("FATAL", source, transaction_id, msg);
+            log("FATAL", source, transaction_id, msg, fileName, lineNumber);
         }
     }
 
-    void DatabaseLogger::logError(std::string_view source, const int transaction_id, std::string_view msg)
+    void DatabaseLogger::logError(std::string_view source, const int transaction_id, std::string_view msg, const char* fileName, const int lineNumber)
     {
         if (getLoggingLevel(level_) >= Level::error)
         {
-            log("ERROR", source, transaction_id, msg);
+            log("ERROR", source, transaction_id, msg, fileName, lineNumber);
         }
     }
 
@@ -188,6 +188,34 @@ namespace Common::Logging {
         {
             log("TRACE", source, transaction_id, msg);
         }
+    }
+
+    void DatabaseLogger::log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg, const char * fileName, const int lineNumber)
+    {
+        // Get current time
+        std::string timestamp{};
+        if (Poco::icompare(times_, "UTC") == 0)
+        {
+            Poco::Timestamp now;
+            timestamp = Poco::DateTimeFormatter::format(now, Poco::DateTimeFormat::SORTABLE_FORMAT);
+        }
+        else if (Poco::icompare(times_, "Local") == 0)
+        {
+            Poco::LocalDateTime now;
+            timestamp = Poco::DateTimeFormatter::format(now, Poco::DateTimeFormat::SORTABLE_FORMAT);
+        }
+        else
+        {
+            throw Poco::InvalidArgumentException("Invalid time zone. Supported time zones : UTC and Local");
+        }
+
+        // Add line and file information
+        std::stringstream ss;
+        ss << fileName << " " << lineNumber << " " << source;
+        source = ss.str();
+
+        Row row(timestamp, level.data(), source.data(), transaction_id, checkJsonFromat(msg));
+        insertSingleRow(row);
     }
 
     void DatabaseLogger::log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg)

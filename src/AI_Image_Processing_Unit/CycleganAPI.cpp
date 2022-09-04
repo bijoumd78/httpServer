@@ -92,7 +92,7 @@ namespace AI::ImageProcessingUnit
         }
         catch (const Poco::Exception& e)
         {
-            Common::Logging::Logger::log("error", "Horse2Zebra model", -1, e.what());
+            Common::Logging::Logger::log("error", "Horse2Zebra model", -1, e.what(), __FILE__, __LINE__);
         }
 
         // Load  downloaded image 

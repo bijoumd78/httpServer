@@ -78,14 +78,15 @@ namespace Common::Logging {
         void executeQuery(const std::string& query);
         static std::string getTableName();
 
-        void logFatal(std::string_view source, const int transaction_id, std::string_view msg) override;
-        void logError(std::string_view source, const int transaction_id, std::string_view msg) override;
+        void logFatal(std::string_view source, const int transaction_id, std::string_view msg, const char* fileName, const int lineNumber) override;
+        void logError(std::string_view source, const int transaction_id, std::string_view msg, const char* fileName, const int lineNumber) override;
         void logWarning(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logInfo(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logDebug(std::string_view source, const int transaction_id, std::string_view msg) override;
         void logTrace(std::string_view source, const int transaction_id, std::string_view msg) override;
 
     private:
+        void log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg, const char* fileName, const int lineNumber);
         void log(std::string_view level, std::string_view source, const int transaction_id, std::string_view msg);
         std::string checkJsonFromat(std::string_view msg)const;
 

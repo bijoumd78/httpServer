@@ -92,8 +92,8 @@ TEST_F(FileLoggerTest, searchLOG)
     pFile_->logInfo("TEST_SEARCH_LOG", 1, "This is a test for the search function");
     pFile_->logDebug("TEST_SEARCH_LOG", 1, "This is a test for the search function");
     pFile_->logWarning("TEST_SEARCH_LOG", 1, "This is a test for the search function");
-    pFile_->logFatal("TEST_SEARCH_LOG", 1, "This is a test for the search function");
-    pFile_->logError("TEST_SEARCH_LOG", 1, "This is a test for the search function");
+    pFile_->logFatal("TEST_SEARCH_LOG", 1, "This is a test for the search function", __FILE__, __LINE__);
+    pFile_->logError("TEST_SEARCH_LOG", 1, "This is a test for the search function", __FILE__, __LINE__);
     pFile_->logTrace("TEST_SEARCH_LOG", 1, "This is a test for the search function");
 
     const auto result1 = FileLogger::search("Info");

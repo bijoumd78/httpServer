@@ -60,7 +60,7 @@ namespace http_server
         }
         catch (const WebSocketException& exc)
         {
-            Common::Logging::Logger::log("error", "WebSocketReqHandler", -1, exc.displayText());
+            Common::Logging::Logger::log("error", "WebSocketReqHandler", -1, exc.displayText(), __FILE__, __LINE__);
             switch (exc.code())
             {
             case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:

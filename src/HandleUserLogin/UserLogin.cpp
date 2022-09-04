@@ -22,7 +22,7 @@ namespace HandleUserLogin
 
     void UserLoginDB::insertUser(const User_& user)const
     {
-        Common::Logging::Logger::log("error", "UserLogin", -1, "Registring new user. ");
+        Common::Logging::Logger::log("error", "UserLogin", -1, "Registring new user. ", __FILE__, __LINE__);
 
         Statement insert(session_);
         const auto& pass = gethashKey(user.password);
@@ -47,7 +47,7 @@ namespace HandleUserLogin
         }
         else
         {
-            Common::Logging::Logger::log("error", "UserLogin", -1, "User not authenticated! ");
+            Common::Logging::Logger::log("error", "UserLogin", -1, "User not authenticated! ", __FILE__, __LINE__);
         }
 
         return isFound;
