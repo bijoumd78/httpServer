@@ -1,6 +1,7 @@
 #pragma once
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/WebSocket.h>
+#include <string_view>
 #include <memory>
 #include <vector>
 
@@ -17,7 +18,7 @@ namespace http_server
         void send(const std::string& buffer);
         void shutdown();
 
-        void handleSearch();
+        void handleSearch(std::string_view channel);
         void handleChat();
 
     private:

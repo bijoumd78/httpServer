@@ -45,9 +45,13 @@ namespace http_server
                 }
             }
 
-            if (Poco::icompare(path.toString(), "\\search") == 0)
+            if (Poco::icompare(path.toString(), "\\search\\logFiles") == 0)
             {
-                handleSearch();
+                handleSearch("logFiles");
+            }
+            else if (Poco::icompare(path.toString(), "\\search\\database") == 0)
+            {
+                handleSearch("database");
             }
             else if (Poco::icompare(path.toString(), "\\chat") == 0)
             {
@@ -79,7 +83,7 @@ namespace http_server
         }
     }
 
-    void WebSocketReqHandler::handleSearch()
+    void WebSocketReqHandler::handleSearch(std::string_view channel)
     {
         Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Search webSocket connection established.");
         Poco::Buffer<char> buf(0);
@@ -89,8 +93,24 @@ namespace http_server
             std::string tmp;
             tmp.resize(n);
             std::copy(buf.begin(), buf.end(), begin(tmp));
+
             // Both file repository and database are searchable
-            if (auto& result = Common::Logging::Logger::search<Common::Logging::FileLogger/*DatabaseLogger*/>(tmp); !result.empty()) {
+            std::vector<std::string> result;
+            if (Poco::icompare(channel, "logFiles") == 0)
+            {
+                result = Common::Logging::Logger::search <Common::Logging::FileLogger>(tmp);
+            }
+            else if (Poco::icompare(channel, "database") == 0)
+            {
+                result = Common::Logging::Logger::search <Common::Logging::DatabaseLogger>(tmp);
+            }
+            else
+            {
+                Common::Logging::Logger::log("error", "WebSocketReqHandler", -1, "Error: Unknown search medium", __FILE__, __LINE__);
+                return;
+            }
+
+            if (!result.empty()) {
                 for (auto& e : result)
                 {
                     // Remove comma for now
@@ -104,7 +124,7 @@ namespace http_server
 
     void WebSocketReqHandler::handleChat()
     {
-        Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection established.");   
+        Common::Logging::Logger::log("information", "WebSocketReqHandler", -1, "Chat webSocket connection established.");
 
         while ((flags_ & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE)
         {

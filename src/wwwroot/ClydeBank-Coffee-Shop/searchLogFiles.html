@@ -28,7 +28,8 @@
     <div class="container">
       <ul>
         <li class="active"><a href="index.html">Menu</a></li>
-        <li><a href="webSocketChat.html">Search Log Files</a></li>
+        <li><a href="searchLogFiles.html">Search Log Files</a></li>
+        <li><a href="searchDatabase.html">Search Database</a></li>
         <li><a href="chat.html">Chat</a></li>
         <li><a href="ai.html">AI Image Processing</a></li>
         <li><a href="events.html">Events</a></li>
@@ -39,7 +40,7 @@
 
   <div class="container">
     <br></br>
-    <h1>Logs</h1>
+    <h1>Log Files</h1>
     <input class="draw-border" id="sendMessage" size="47" value="" style="margin-bottom: 5px;">
     <button class="echo-button" id="connect">Search</button>
     <br></br>
@@ -54,7 +55,7 @@
     }
 
     connect.onclick = function () {
-      ws = new WebSocket("ws://localhost:5849/search");
+      ws = new WebSocket("ws://localhost:5849/search/logFiles");
       ws.onopen = function () {
         ws.send(sendMessage.value);
         sendMessage.value = "";
