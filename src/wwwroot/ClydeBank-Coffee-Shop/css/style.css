@@ -38,6 +38,13 @@ ul {
     margin: 0;
 }
 
+#navlist li
+  {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+  }
+  
 p { font-size: 1em; }
 
 img { border-style: none; }

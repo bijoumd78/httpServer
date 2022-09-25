@@ -337,11 +337,11 @@ namespace http_server
             <meta charset = "utf-8">
             <meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">)";
         if (isHourseZebra) {
-            ostr << R"(<link rel="stylesheet" type="text/css" href="css/ai2.css">)";
+            ostr << R"(<link rel="stylesheet" type="text/css" href="css/ai.css">)";
         }
         else
         {
-            ostr << R"(<link rel="stylesheet" type="text/css" href="css/ai23.css">)";
+            ostr << R"(<link rel="stylesheet" type="text/css" href="css/ai2.css">)";
         }
         ostr <<
             R"(<link rel = "stylesheet" type = "text/css" href = "css/style.css">
@@ -364,9 +364,10 @@ namespace http_server
             </header>
             <nav>
             <div class = "container">
-            <ul>
+            <ul id="navlist">
             <li class = "active"><a href = "index.html">Menu</a></li>
-            <li><a href = "webSocketChat.html">Search Log Files</a></li>
+            <li><a href="searchLogFiles.html">Search Log Files</a></li>
+            <li><a href="searchDatabase.html">Search Database</a></li>
             <li><a href= "chat.html">Chat</a></li>
             <li><a href = "ai.html">AI Image Processing</a></li>
             <li><a href = "events.html">Events</a></li>

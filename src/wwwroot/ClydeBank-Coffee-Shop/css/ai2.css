@@ -19,7 +19,7 @@
   .navcontainer {
     float: left;
     width: 30%;
-    height: 410px;
+    height: 680px;
     /* only for demonstration, should be removed */
     background: #ccc;
     padding: 20px;
@@ -31,12 +31,19 @@
     padding: 0;
   }
 
+  #navlist li
+  {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+  }
+
   article {
     float: left;
     padding: 5px;
     width: 70%;
     background-color: #f1f1f1;
-    height: 370px;
+    height: 680px;
     /* only for demonstration, should be removed */
   }
 

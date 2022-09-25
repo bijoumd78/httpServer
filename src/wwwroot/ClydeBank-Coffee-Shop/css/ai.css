@@ -10,13 +10,13 @@
   header {
     background-color: Sienna;
     padding: 20px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 25px;
     color: white;
   }
 
   /* Create two columns/boxes that floats next to each other */
-  nav {
+  .navcontainer {
     float: left;
     width: 30%;
     height: 410px;
@@ -29,6 +29,13 @@
   nav ul {
     list-style-type: none;
     padding: 0;
+  }
+
+  #navlist li
+  {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
   }
 
   article {
