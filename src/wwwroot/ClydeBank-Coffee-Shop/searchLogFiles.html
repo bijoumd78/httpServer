@@ -59,6 +59,8 @@
       ws.onopen = function () {
         ws.send(sendMessage.value);
         sendMessage.value = "";
+        var div = document.getElementById("output");
+        div.innerHTML = ''
         log("Search results", "green");
       };
 
