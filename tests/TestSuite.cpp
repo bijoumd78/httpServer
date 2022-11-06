@@ -15,7 +15,7 @@ namespace test::AIRESTAPI{
 
 TEST_F(DatabaseLoggerTest, insertSingleRow)
 {
-    tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_SINGLE_ROW", "1", "{\"message\": \"This is a test\"}" };
+    tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_SINGLE_ROW", "1", R"({"message": "This is a test"})" };
     Row row(data[0].data(), data[1].data(), data[2].data(), std::stoi(data[3].data()), data[4].data());
     pDb_->insertSingleRow(row);
 
@@ -44,7 +44,7 @@ TEST_F(DatabaseLoggerTest, insertSingleRow)
 
 TEST_F(DatabaseLoggerTest, insertMultipleRows)
 {
-    tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_MULTIPLE_ROWS", "10", "{\"message\": \"This is a test\"}" };
+    tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_MULTIPLE_ROWS", "10", R"({"message": "This is a test"})" };
     multipleRows_t rows(10, data);
     DatabaseLogger::insertMultipleRows(rows);
 
@@ -76,7 +76,7 @@ TEST_F(DatabaseLoggerTest, insertMultipleRows)
 
 TEST_F(DatabaseLoggerTest, searchDB)
 {
-    tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_SEARCH_MULTIPLE_ROWS", "100", "{\"message\": \"This is a test\"}" };
+    tableData_t data{ "2022-04-10 21:13:37-04", "INFO", "TEST_SEARCH_MULTIPLE_ROWS", "100", R"({"message": "This is a test"})" };
     multipleRows_t rows(10, data);
     DatabaseLogger::insertMultipleRows(rows);
 
