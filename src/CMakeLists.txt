@@ -51,6 +51,14 @@ add_custom_command(TARGET AIRESTAPI
                     COMMAND ${CMAKE_COMMAND} -E copy_directory 
                     ${PROJECT_SOURCE_DIR}/src/wwwroot/
                     $<TARGET_FILE_DIR:AIRESTAPI>/wwwroot)
+					
+message (STATUS "Copying high resolution and horse to zebra AI models")
+add_custom_command(TARGET AIRESTAPI 
+                    POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${PROJECT_SOURCE_DIR}/src/AI_Image_Processing_Unit/ai_models
+					${PROJECT_SOURCE_DIR}/src/AI_Image_Processing_Unit2/ai_models
+                    $<TARGET_FILE_DIR:AIRESTAPI>/ai_models)
 
 if (WIN32)
 	message (STATUS "Copying pytorch DLLs to the binary directory")

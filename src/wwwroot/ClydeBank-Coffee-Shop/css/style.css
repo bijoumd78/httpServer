@@ -96,18 +96,13 @@ nav li a {
 
 /* End Header */
 
-/* Footer */
-
+/* Style the footer */
 footer {
-    background: #333;
-    color: #fff;
-    padding: 10px;  
-    height: 100px;
-}
-
-footer a { color: cornsilk; }
-
-/* End Footer */
+    background-color: Sienna;
+    padding: 10px;
+    text-align: center;
+    color: white;
+  }
 
 /* Home Page Content */
 

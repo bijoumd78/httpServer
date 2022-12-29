@@ -239,7 +239,7 @@ namespace http_server
 
                 // Transfrom horse image to zebra image
                 AI::ImageProcessingUnit::InputArg inputArgs;
-                inputArgs.xmlModel_ = "C:/Users/bijou/Desktop/PocoServer/PocoServer/src/AI_Image_Processing_Unit/ai_models/traced_zebra_model.pt";
+                inputArgs.xmlModel_ = "ai_models/traced_zebra_model.pt";
                 inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
                 inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
 
@@ -274,7 +274,7 @@ namespace http_server
                 // Transfrom image to high resolution images
                 AI::ImageProcessingUnit2::InputArgList inputArgs;
                 inputArgs.deviceName_ = "CPU";
-                inputArgs.xmlModel_ = "C:/Users/bijou/Desktop/PocoServer/PocoServer/src/AI_Image_Processing_Unit2/ai_models/OpenVINO_IR/FP32/super_resolution.xml";
+                inputArgs.xmlModel_ = "ai_models/OpenVINO_IR/FP16/super_resolution.xml";
                 inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
                 inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
 

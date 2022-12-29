@@ -64,7 +64,15 @@ foreach(p LIB BIN INCLUDE CMAKE)
     unset(_path)
 endforeach()
 
-#list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# These search directories are needed for AI modules 1 and 2
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/AI_Image_Processing_Unit/Pytorch/libtorch-win-shared-with-deps-debug-1.10.2+cpu/libtorch)
+else()
+ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/AI_Image_Processing_Unit/Pytorch/libtorch-win-shared-with-deps-1.10.2+cpu/libtorch)
+endif()
+
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/AI_Image_Processing_Unit2/deployment_tools/inference_engine)
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/AI_Image_Processing_Unit2/deployment_tools/opencv)
 
 # Poco Library
 find_package(Poco REQUIRED COMPONENTS Foundation JSON Util Net Data)
