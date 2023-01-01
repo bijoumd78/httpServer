@@ -11,7 +11,7 @@ endif()
 target_link_libraries(AI_Image_Processing_Unit PUBLIC ${TORCH_LIBRARIES})
 target_link_libraries(AI_Image_Processing_Unit PRIVATE logger)
 
-set_target_properties(AI_Image_Processing_Unit PROPERTIES FOLDER "AI_Image_Processing_Unit")
+set_target_properties(AI_Image_Processing_Unit PROPERTIES FOLDER "AI_Image_Processing")
 
 install(TARGETS
     AI_Image_Processing_Unit

@@ -14,7 +14,7 @@ endif()
 
 target_link_libraries(HandleImageProcessing PRIVATE logger AI_Image_Processing_Unit AI_Image_Processing_Unit2)
 
-set_target_properties(HandleImageProcessing PROPERTIES FOLDER "HandleImageProcessing")
+set_target_properties(HandleImageProcessing PROPERTIES FOLDER "AI_Image_Processing")
 
 install(TARGETS
     HandleImageProcessing

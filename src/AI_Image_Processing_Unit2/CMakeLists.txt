@@ -35,7 +35,7 @@ endif()
 target_link_libraries(AI_Image_Processing_Unit2 PUBLIC ${OpenCV_LIBRARIES} ${InferenceEngine_LIBRARIES} ie_samples_utils gflags)
 target_link_libraries(AI_Image_Processing_Unit2 PRIVATE logger)
 
-set_target_properties(AI_Image_Processing_Unit2 PROPERTIES FOLDER "AI_Image_Processing_Unit2")
+set_target_properties(AI_Image_Processing_Unit2 PROPERTIES FOLDER "AI_Image_Processing")
 
 install(TARGETS
     AI_Image_Processing_Unit
