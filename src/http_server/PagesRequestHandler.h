@@ -63,14 +63,14 @@ public:
 			std::string disp;
 			Poco::Net::NameValueCollection params;
 			Poco::Net::MessageHeader::splitParameters(header["Content-Disposition"], disp, params);
-			name_ = params.get("name", "(unnamed)");
-			fileName_ = uuid.toString() + "_" + params.get("filename", "(unnamed)");
+			fileName_ = params.get("filename", "(unnamed)");
+			uuidFileName_ = uuid.toString() + "_" + fileName_;
 		}
 
 		// Save uploaded file to the download directory
 		Poco::CountingInputStream istr(stream);
 		std::ofstream fileStream;
-		fileStream.open(root_ +"/Download/" + fileName_, std::ios::out | std::ios::binary);
+		fileStream.open(root_ +"/Download/" + uuidFileName_, std::ios::out | std::ios::binary);
 		Poco::StreamCopier::copyStream(istr, fileStream);
 		length_ = istr.chars();
 	}
@@ -80,14 +80,14 @@ public:
 		return length_;
 	}
 
-	const std::string& name() const
-	{
-		return name_;
-	}
-
 	const std::string& fileName() const
 	{
 		return fileName_;
+	}
+
+	const std::string& uuidFileName() const
+	{
+		return uuidFileName_;
 	}
 
 	const std::string& contentType() const
@@ -98,8 +98,8 @@ public:
 private:
 	size_t length_{};
 	std::string type_;
-	std::string name_;
 	std::string fileName_;
+	std::string uuidFileName_;
 	const std::string root_{ "wwwroot/ClydeBank-Coffee-Shop" };
 };
 
