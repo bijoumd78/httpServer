@@ -231,84 +231,78 @@ namespace http_server
                 res.setStatus(HTTPResponse::HTTPStatus::HTTP_OK);
             }
 
-            if (const auto& fileName = formHandler.fileName(); !fileName.empty())
+            if (Poco::icompare(path.getFileName(), "aiform") == 0)
             {
-                if (const auto& loadedImage = formHandler.uuidFileName(); Poco::icompare(path.getFileName(), "aiform") == 0 )
+                std::stringstream ss;
+                ss << "Starting image processing <Horse2Zebra>: " << formHandler.fileName();
+                Common::Logging::Logger::log("information", "source POST AI method", -1, ss.str());
+
+                // Transfrom horse image to zebra image
+                AI::ImageProcessingUnit::InputArg inputArgs;
+                inputArgs.xmlModel_ = "ai_models/traced_zebra_model.pt";
+                inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
+                inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
+
+                // Stall the computation for 500 ms for image upload to complete
+                Poco::File file(inputArgs.inputImagePath_);
+                do
                 {
-                    std::stringstream ss;
-                    ss << "Starting image processing <Horse2Zebra>: " << loadedImage;
-                    Common::Logging::Logger::log("information", "source POST AI method", -1, ss.str());
-
-                    // Transfrom horse image to zebra image
-                    AI::ImageProcessingUnit::InputArg inputArgs;
-                    inputArgs.xmlModel_ = "ai_models/traced_zebra_model.pt";
-                    inputArgs.inputImagePath_ = root + "/Download/" + loadedImage;
-                    inputArgs.outputImagePath_ = root + "/Download/out_" + loadedImage;
-
-                    // Stall the computation for 500 ms for image upload to complete
-                    Poco::File file(inputArgs.inputImagePath_);
-                    do
-                    {
-                        Poco::Thread::sleep(500);
-                    } while (!file.isFile());
+                    Poco::Thread::sleep(500);
+                } while (!file.isFile());
 
 
-                    AI::ImageProcessing::HandleImageProcessing<AI::ImageProcessingUnit::InputArg> proc;
-                    AI::ImageProcessingUnit::RunCycleganAPI horseZebraImg;
-                    proc.processEvent += Poco::delegate(&horseZebraImg, &AI::ImageProcessingUnit::RunCycleganAPI::processImage);
-                    proc.processImage(inputArgs);
-                    proc.processEvent -= Poco::delegate(&horseZebraImg, &AI::ImageProcessingUnit::RunCycleganAPI::processImage);
+                AI::ImageProcessing::HandleImageProcessing<AI::ImageProcessingUnit::InputArg> proc;
+                AI::ImageProcessingUnit::RunCycleganAPI horseZebraImg;
+                proc.processEvent += Poco::delegate(&horseZebraImg, &AI::ImageProcessingUnit::RunCycleganAPI::processImage);
+                proc.processImage(inputArgs);
+                proc.processEvent -= Poco::delegate(&horseZebraImg, &AI::ImageProcessingUnit::RunCycleganAPI::processImage);
 
-                    // Send reponse
-                    res.setChunkedTransferEncoding(true);
-                    res.setContentType("text/html");
-                    std::ostream& ostr = res.send();
-                    // Fill outstream with html form
-                    fillOstream("Download/" + loadedImage, "Download/out_" + loadedImage, ostr, true);
-                    res.setStatus(HTTPResponse::HTTPStatus::HTTP_OK);
-                }
-                else if (Poco::icompare(path.getFileName(), "aiform2") == 0)
-                {
-                    std::stringstream ss;
-                    ss << "Starting image processing <HighRes>: " << loadedImage;
-                    Common::Logging::Logger::log("information", "source POST AI method", -1, ss.str());
-
-                    // Transfrom image to high resolution images
-                    AI::ImageProcessingUnit2::InputArgList inputArgs;
-                    inputArgs.deviceName_ = "CPU";
-                    inputArgs.xmlModel_ = "ai_models/OpenVINO_IR/FP16/super_resolution.xml";
-
-
-                    inputArgs.inputImagePath_ = root + "/Download/" + loadedImage;
-                    inputArgs.outputImagePath_ = root + "/Download/out_" + loadedImage;
-
-                    // Stall the computation for 500 ms for image upload to complete
-                    Poco::File file(inputArgs.inputImagePath_);
-                    do
-                    {
-                        Poco::Thread::sleep(500);
-                    } while (!file.isFile());
-
-                    AI::ImageProcessing::HandleImageProcessing<AI::ImageProcessingUnit2::InputArgList> proc;
-                    AI::ImageProcessingUnit2::RunHighResNet highResImg;
-                    proc.processEvent += Poco::delegate(&highResImg, &AI::ImageProcessingUnit2::RunHighResNet::processImage);
-                    proc.processImage(inputArgs);
-                    proc.processEvent -= Poco::delegate(&highResImg, &AI::ImageProcessingUnit2::RunHighResNet::processImage);
-
-                    // Send reponse
-                    res.setChunkedTransferEncoding(true);
-                    res.setContentType("text/html");
-                    std::ostream& ostr = res.send();
-                    // Fill outstream with html form
-                    fillOstream("Download/" + loadedImage, "Download/out_" + loadedImage, ostr, false);
-                    res.setStatus(HTTPResponse::HTTPStatus::HTTP_OK);
-                }
-                else
-                {
-                    //TODO:
-                }
+                // Send reponse
+                res.setChunkedTransferEncoding(true);
+                res.setContentType("text/html");
+                std::ostream& ostr = res.send();
+                // Fill outstream with html form
+                fillOstream("Download/" + formHandler.fileName(), "Download/out_" + formHandler.fileName(), ostr, true);
+                res.setStatus(HTTPResponse::HTTPStatus::HTTP_OK);
             }
-            res.setStatusAndReason(HTTPResponse::HTTPStatus::HTTP_BAD_REQUEST, "Please select an image");
+            else if (Poco::icompare(path.getFileName(), "aiform2") == 0)
+            {
+                std::stringstream ss;
+                ss << "Starting image processing <HighRes>: " << formHandler.fileName();
+                Common::Logging::Logger::log("information", "source POST AI method", -1, ss.str());
+
+                // Transfrom image to high resolution images
+                AI::ImageProcessingUnit2::InputArgList inputArgs;
+                inputArgs.deviceName_ = "CPU";
+                inputArgs.xmlModel_ = "ai_models/OpenVINO_IR/FP16/super_resolution.xml";
+                inputArgs.inputImagePath_ = root + "/Download/" + formHandler.fileName();
+                inputArgs.outputImagePath_ = root + "/Download/out_" + formHandler.fileName();
+
+                // Stall the computation for 500 ms for image upload to complete
+                Poco::File file(inputArgs.inputImagePath_);
+                do
+                {
+                    Poco::Thread::sleep(500);
+                } while (!file.isFile());
+
+                AI::ImageProcessing::HandleImageProcessing<AI::ImageProcessingUnit2::InputArgList> proc;
+                AI::ImageProcessingUnit2::RunHighResNet highResImg;
+                proc.processEvent += Poco::delegate(&highResImg, &AI::ImageProcessingUnit2::RunHighResNet::processImage);
+                proc.processImage(inputArgs);
+                proc.processEvent -= Poco::delegate(&highResImg, &AI::ImageProcessingUnit2::RunHighResNet::processImage);
+
+                // Send reponse
+                res.setChunkedTransferEncoding(true);
+                res.setContentType("text/html");
+                std::ostream& ostr = res.send();
+                // Fill outstream with html form
+                fillOstream("Download/" + formHandler.fileName(), "Download/out_" + formHandler.fileName(), ostr, false);
+                res.setStatus(HTTPResponse::HTTPStatus::HTTP_OK);
+            }
+            else
+            {
+                //TODO:
+            }
         }
         catch (const Poco::Exception& e)
         {
