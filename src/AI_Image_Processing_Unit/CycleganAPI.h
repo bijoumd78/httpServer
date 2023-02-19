@@ -1,12 +1,12 @@
 #pragma once
 
-#include <torch/torch.h>  
+#include <torch/torch.h>
 #define cimg_use_jpeg
 #include <CImg.h>
 
 namespace AI::ImageProcessingUnit
 {
-    using torch::Tensor; 
+using torch::Tensor; 
 
 // at the time of writing this code (shortly after PyTorch 1.3),
 // the C++ api wasn't complete and (in the case of ReLU) bug-free,
@@ -24,7 +24,8 @@ struct ConvTranspose2d : torch::nn::Module
   Tensor weight;
   Tensor bias;
 
-  ConvTranspose2d(int64_t in_channels, int64_t out_channels, int64_t kernel_size, int64_t stride, int64_t padding, int64_t output_padding);
+  ConvTranspose2d(int64_t in_channels, int64_t out_channels, int64_t kernel_size, int64_t stride, 
+                  int64_t padding, int64_t output_padding);
 
   Tensor forward(const Tensor &inp);
 };

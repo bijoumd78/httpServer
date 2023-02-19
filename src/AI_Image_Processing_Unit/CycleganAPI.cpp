@@ -3,7 +3,8 @@
 
 namespace AI::ImageProcessingUnit
 {
-    ConvTranspose2d::ConvTranspose2d(int64_t in_channels, int64_t out_channels, int64_t kernel_size, int64_t stride, int64_t padding, int64_t output_padding) :
+    ConvTranspose2d::ConvTranspose2d(int64_t in_channels, int64_t out_channels, int64_t kernel_size, 
+                                     int64_t stride, int64_t padding, int64_t output_padding) :
         stride_(2, stride),
         padding_(2, padding),
         output_padding_(2, output_padding),
@@ -96,8 +97,9 @@ namespace AI::ImageProcessingUnit
         }
 
         // Load  downloaded image 
+        constexpr const size_t imageDim = 400;
         cimg_library::CImg<float> image(args.inputImagePath_.c_str());
-        image.resize(400, 400);
+        image.resize(imageDim, imageDim);
 
         auto input_ = torch::tensor(torch::ArrayRef<float>(image.data(), image.size()));
 
