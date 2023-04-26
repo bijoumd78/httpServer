@@ -39,7 +39,7 @@ namespace http_server
     {
         // Load default configuration file: AIRESTAPI.json
         loadConfiguration(); 
-        Application::initialize(self);
+        ServerApplication::initialize(self);
         auto tmp = self.configPtr();
         isLoggingToConsoleEnabled_ = tmp->getBool("writeToConsole");
         isLoggingToFileEnabled_    = tmp->getBool("writeToFile");
@@ -48,7 +48,7 @@ namespace http_server
 
     void HttpServer::defineOptions(Poco::Util::OptionSet& options)
     {
-        Application::defineOptions(options);
+        ServerApplication::defineOptions(options);
 
         options.addOption(
             Poco::Util::Option("help", "h", "Display help information")
